@@ -1,0 +1,135 @@
+<header class="app-header">
+  <div class="header-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <h1>Guía de entrevista Frontend / Mobile</h1>
+      <p>Banco adaptativo de preguntas, conceptos y repreguntas.</p>
+    </div>
+  </div>
+
+  <!-- Active Candidate Chip (if session exists) -->
+  @if (sessionService.activeCandidate(); as cand) {
+    <div class="active-candidate-chip">
+      <div class="candidate-avatar">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="candidate-details">
+        <div class="candidate-name-row">
+          <strong class="cand-name">{{ cand.name }}</strong>
+          <span class="cand-seniority" [attr.data-level]="cand.seniority">{{ cand.seniority }}</span>
+        </div>
+        <span class="cand-role">{{ cand.role }}</span>
+      </div>
+      <button
+        class="icon-btn change-cand-btn"
+        type="button"
+        (click)="changeCandidate()"
+        title="Cambiar o configurar otro candidato"
+        aria-label="Cambiar candidato"
+      >
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+      </button>
+    </div>
+  } @else {
+    <div class="no-candidate-banner">
+      <button class="btn btn-secondary btn-sm" type="button" (click)="changeCandidate()">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+        <span>Asignar Candidato</span>
+      </button>
+    </div>
+  }
+
+  <div class="header-actions">
+    <!-- Theme Toggle -->
+    <button
+      class="icon-btn theme-btn"
+      type="button"
+      (click)="themeService.toggleTheme()"
+      [title]="themeService.theme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+      aria-label="Cambiar tema"
+    >
+      @if (themeService.theme() === 'dark') {
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      } @else {
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      }
+    </button>
+
+    <!-- Load JSON Button & Hidden File Input -->
+    <label class="btn btn-secondary file-upload-btn" for="jsonFileInput">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="17 8 12 3 7 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+      <span>Cargar JSON</span>
+    </label>
+    <input
+      id="jsonFileInput"
+      type="file"
+      accept=".json,application/json"
+      hidden
+      (change)="onFileSelected($event)"
+    />
+
+    <!-- Restore Defaults Button -->
+    <button
+      class="btn btn-secondary"
+      type="button"
+      (click)="store.restoreDefaultData()"
+      title="Restaurar datos predeterminados"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="1 4 1 10 7 10"></polyline>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+      </svg>
+      <span>Restaurar base</span>
+    </button>
+
+    <!-- Export JSON Button -->
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="store.exportCurrentJson()"
+      title="Exportar temario en JSON"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Exportar JSON</span>
+    </button>
+  </div>
+</header>

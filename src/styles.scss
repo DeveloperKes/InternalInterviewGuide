@@ -1,0 +1,71 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'theme';
+@use 'typography';
+@use 'buttons';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  @include custom-scrollbar;
+  transition: background-color $transition-base, color $transition-base;
+}
+
+// Global App Layout
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 1760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: $space-3 $space-4;
+  gap: $space-5;
+
+  @include respond-to('lg') {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: $space-4 $space-6;
+  }
+}
+
+// Global form inputs
+.form-control {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-family: inherit;
+  font-size: $font-size-base;
+  border-radius: $radius-md;
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  outline: none;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+
+  &:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+}
+
+select.form-control {
+  cursor: pointer;
+}

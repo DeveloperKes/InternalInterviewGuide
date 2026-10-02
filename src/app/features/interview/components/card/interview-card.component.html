@@ -1,0 +1,164 @@
+@let currentItem = item();
+
+<article class="card" [class.expanded]="isExpanded()" [attr.data-id]="currentItem.id">
+  <!-- Card Summary / Header -->
+  <div class="card-summary">
+    <div class="card-main-info">
+      <!-- Badges -->
+      <div class="badges">
+        <span class="badge category-badge">{{ currentItem.category }}</span>
+
+        @if (currentItem.priority === 'alta') {
+          <span class="badge high"><span class="dot"></span>Alta</span>
+        } @else if (currentItem.priority === 'media') {
+          <span class="badge medium"><span class="dot"></span>Media</span>
+        } @else {
+          <span class="badge complementaria"><span class="dot"></span>Complementaria</span>
+        }
+
+        @if (isConcept()) {
+          <span class="badge concept"><span class="dot"></span>Concepto</span>
+        }
+      </div>
+
+      <!-- Question Title -->
+      <h2 class="card-title">{{ currentItem.question }}</h2>
+
+      <!-- Tags -->
+      @if (currentItem.tags.length > 0) {
+        <div class="tags">
+          @for (tag of currentItem.tags; track tag) {
+            <span class="tag">#{{ tag }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Actions (Favorite & Accordion Toggle) -->
+    <div class="card-actions">
+      <button
+        class="icon-btn"
+        [class.favorite]="isFavorite()"
+        type="button"
+        (click)="onFavoriteClick()"
+        [title]="isFavorite() ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+        [attr.aria-label]="isFavorite() ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          [attr.fill]="isFavorite() ? 'currentColor' : 'none'"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </button>
+
+      <button
+        class="toggle-btn"
+        type="button"
+        (click)="onToggleClick()"
+        [attr.aria-expanded]="isExpanded()"
+      >
+        <span>{{ isExpanded() ? 'Ocultar' : 'Ver guía' }}</span>
+        <svg
+          class="chevron-icon"
+          [class.rotated]="isExpanded()"
+          viewBox="0 0 24 24"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsible Details Section -->
+  @if (isExpanded()) {
+    <div class="card-details">
+      <div class="detail-grid">
+        <!-- Expected Response Block -->
+        <section class="detail-block expected-block">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            {{ titleExpected() }}
+          </h3>
+          <p>{{ currentItem.expected || 'Sin explicación registrada.' }}</p>
+        </section>
+
+        <!-- Basic / Misconception Block -->
+        <section class="detail-block basic-block">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            {{ titleBasic() }}
+          </h3>
+          <p>{{ currentItem.basic || 'Sin registro.' }}</p>
+        </section>
+
+        <!-- Follow-ups Block -->
+        <section class="detail-block followups-block">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            {{ titleFollowups() }}
+          </h3>
+
+          @if (currentItem.followups.length > 0) {
+            <ul class="detail-list">
+              @for (fu of currentItem.followups; track $index) {
+                <li>
+                  <strong class="followup-q">{{ getFollowUpQuestion(fu) }}</strong>
+                  @if (getFollowUpAnswer(fu); as ans) {
+                    <p class="followup-a">{{ ans }}</p>
+                  }
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="muted-text">
+              {{ isConcept() ? 'No hay puntos adicionales registrados.' : 'No hay repreguntas registradas.' }}
+            </p>
+          }
+        </section>
+
+        <!-- Terms / Definitions Block -->
+        <section class="detail-block terms-block">
+          <h3>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            {{ titleTerms() }}
+          </h3>
+
+          @if (currentItem.terms.length > 0) {
+            <div class="terms-grid">
+              @for (termItem of currentItem.terms; track termItem.term) {
+                <div class="term-card">
+                  <strong class="term-title">{{ termItem.term }}</strong>
+                  <span class="term-def">{{ termItem.definition }}</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="muted-text">No hay tecnicismos registrados.</p>
+          }
+        </section>
+      </div>
+    </div>
+  }
+</article>

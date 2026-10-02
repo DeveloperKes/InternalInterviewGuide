@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guía de entrevista Frontend / Mobile</title>
+  <meta name="description" content="Banco local de preguntas, conceptos, respuestas esperadas y repreguntas para entrevistas técnicas con foco en Ionic, Capacitor, Angular y Mobile First." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+      </div>
+      <div>
+        <h1>Guía de entrevista Frontend / Mobile</h1>
+        <p>Banco local de preguntas, conceptos, respuestas esperadas y repreguntas.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn theme-btn" type="button" title="Cambiar tema (Claro / Oscuro)" aria-label="Cambiar tema">
+        <svg class="theme-icon-dark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="theme-icon-light" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      
+      <label class="button secondary file-upload-btn" for="jsonFile">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <span>Cargar JSON</span>
+      </label>
+      <input id="jsonFile" type="file" accept=".json,application/json" hidden />
+      
+      <button id="restoreDefault" class="button secondary" type="button" title="Restaurar datos predeterminados">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        <span>Restaurar base</span>
+      </button>
+      
+      <button id="exportJson" class="button" type="button" title="Exportar temario en JSON">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Exportar JSON</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <div class="panel-header">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          <h2>Filtros</h2>
+        </div>
+
+        <label class="field">
+          <span>Buscar</span>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input id="search" type="search" placeholder="tokens, lifecycle, release..." />
+          </div>
+        </label>
+
+        <label class="field">
+          <span>Categoría</span>
+          <select id="categoryFilter"></select>
+        </label>
+
+        <label class="field">
+          <span>Importancia</span>
+          <select id="priorityFilter">
+            <option value="all">Todas</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="complementaria">Complementaria</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Tipo</span>
+          <select id="typeFilter">
+            <option value="all">Todos</option>
+            <option value="pregunta">Preguntas</option>
+            <option value="concepto">Conceptos</option>
+          </select>
+        </label>
+
+        <label class="check-row">
+          <input id="favoritesOnly" type="checkbox" />
+          <span class="check-custom"></span>
+          <span>Solo favoritos</span>
+        </label>
+
+        <button id="clearFilters" class="button secondary full" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <span>Limpiar filtros</span>
+        </button>
+      </section>
+
+      <section class="panel stats">
+        <div class="panel-header">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <h2>Resumen</h2>
+        </div>
+        <div id="stats"></div>
+      </section>
+
+      <section class="panel info-panel">
+        <div class="panel-header">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          <h2>Uso sugerido</h2>
+        </div>
+        <p class="muted small">
+          Puedes reemplazar toda la base cargando un nuevo <code>temario.json</code>.
+          Los favoritos y el último JSON cargado quedan guardados en este navegador.
+        </p>
+      </section>
+    </aside>
+
+    <section class="content">
+      <div class="toolbar">
+        <div class="toolbar-info">
+          <strong id="resultCount">0 resultados</strong>
+          <span id="dataSource" class="muted"></span>
+        </div>
+        <div class="toolbar-actions">
+          <button id="randomHigh" class="button secondary" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+            <span>Pregunta Senior aleatoria</span>
+          </button>
+          <button id="expandAll" class="button secondary" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+            <span>Expandir todo</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="randomCard" class="random-card hidden" aria-live="polite"></div>
+      <div id="cards" class="cards"></div>
+      <div id="emptyState" class="empty hidden">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+        </div>
+        <h3>No se encontraron coincidencias</h3>
+        <p>Prueba con otros términos de búsqueda o borra los filtros aplicados.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="errorDialog">
+    <form method="dialog" class="dialog-card">
+      <div class="dialog-header">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <h2>No se pudo cargar el JSON</h2>
+      </div>
+      <p id="errorMessage"></p>
+      <div class="dialog-actions">
+        <button class="button" value="close">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="temario-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

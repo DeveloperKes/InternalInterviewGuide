@@ -1,0 +1,26 @@
+@if (message(); as err) {
+  <div class="dialog-overlay" (click)="close.emit()">
+    <div class="dialog-card" (click)="$event.stopPropagation()" role="alertdialog" aria-modal="true">
+      <div class="dialog-header">
+        <div class="dialog-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ef4444" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h2>Error al cargar datos</h2>
+      </div>
+
+      <div class="dialog-body">
+        <p>{{ err }}</p>
+      </div>
+
+      <div class="dialog-actions">
+        <button class="btn btn-primary" type="button" (click)="close.emit()">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+}

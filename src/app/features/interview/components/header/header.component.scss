@@ -1,0 +1,164 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4 $space-6;
+  background-color: var(--surface-header);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  transition: background-color $transition-base, border-color $transition-base;
+
+  @include respond-to('lg') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-lg;
+    background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    flex-shrink: 0;
+  }
+
+  .brand-text {
+    h1 {
+      font-size: $font-size-lg;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      font-size: $font-size-xs;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+  }
+}
+
+// Active candidate chip styling
+.active-candidate-chip {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 0.35rem 0.75rem;
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-full;
+  box-shadow: var(--shadow-sm);
+
+  .candidate-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .candidate-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+    .candidate-name-row {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+
+      .cand-name {
+        font-size: $font-size-xs;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .cand-seniority {
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.1rem 0.4rem;
+        border-radius: $radius-full;
+
+        &[data-level='junior'] {
+          background-color: #f0fdf4;
+          color: #166534;
+        }
+
+        &[data-level='mid'] {
+          background-color: #eff6ff;
+          color: #1e40af;
+        }
+
+        &[data-level='senior'] {
+          background-color: #faf5ff;
+          color: #6b21a8;
+        }
+
+        &[data-level='lead'] {
+          background-color: #fffbeb;
+          color: #92400e;
+        }
+      }
+    }
+
+    .cand-role {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      max-width: 220px;
+      @include truncate;
+    }
+  }
+
+  .change-cand-btn {
+    padding: 0.25rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+
+    &:hover {
+      background-color: var(--secondary-hover);
+      color: var(--text-primary);
+    }
+  }
+}
+
+.no-candidate-banner {
+  display: flex;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-2;
+
+  .file-upload-btn {
+    cursor: pointer;
+    margin: 0;
+  }
+}

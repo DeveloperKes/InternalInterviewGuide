@@ -1,0 +1,122 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.random-spotlight {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: $radius-lg;
+  padding: $space-4 $space-5;
+  margin-bottom: $space-4;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInDown $transition-base ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary), #8b5cf6);
+  }
+}
+
+.spotlight-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-2;
+}
+
+.spotlight-title-group {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+
+  .spotlight-tag {
+    font-size: $font-size-xs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    background-color: var(--primary-light);
+    border: 1px solid var(--primary-border);
+    padding: 0.15rem 0.5rem;
+    border-radius: $radius-full;
+  }
+
+  .spotlight-category {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+}
+
+.close-btn {
+  padding: $space-1;
+  border-radius: $radius-full;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+
+  &:hover {
+    color: var(--text-primary);
+    background-color: var(--secondary-bg);
+  }
+}
+
+.spotlight-question {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: $space-3;
+}
+
+.spotlight-followup {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  padding: $space-3;
+  margin-top: $space-2;
+
+  .fu-label, .fu-answer-label {
+    display: block;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+
+  .fu-answer-label {
+    margin-top: $space-2;
+    color: #10b981;
+  }
+
+  .fu-question {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .fu-answer {
+    font-size: $font-size-xs;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

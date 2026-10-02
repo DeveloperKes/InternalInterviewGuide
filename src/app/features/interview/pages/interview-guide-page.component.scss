@@ -1,0 +1,58 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  min-width: 0; // Prevent flex item overflow
+}
+
+.content-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-lg;
+  box-shadow: var(--shadow-sm);
+
+  @include respond-to('sm') {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.toolbar-info {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+
+  .result-count {
+    font-size: $font-size-base;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .data-source-badge {
+    font-size: $font-size-xs;
+    color: var(--text-muted);
+  }
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}

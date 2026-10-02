@@ -1,0 +1,72 @@
+@use 'variables' as *;
+
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  z-index: $z-modal;
+  animation: fadeIn $transition-fast ease-out;
+}
+
+.dialog-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-xl;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 480px;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  animation: scaleUp $transition-fast ease-out;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .dialog-icon {
+    flex-shrink: 0;
+  }
+
+  h2 {
+    font-size: $font-size-lg;
+    font-weight: 700;
+  }
+}
+
+.dialog-body {
+  p {
+    font-size: $font-size-base;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

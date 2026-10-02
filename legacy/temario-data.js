@@ -1,0 +1,2539 @@
+window.INTERVIEW_GUIDE_DEFAULT_DATA = {
+  "meta": {
+    "title": "Guía de entrevista Frontend / Mobile",
+    "version": "1.0.0",
+    "description": "Banco de preguntas, conceptos y casos de estudio Senior para entrevistas técnicas Frontend y Mobile (Ionic, Capacitor, Angular, Arquitectura, Seguridad, Publicación y CI/CD)."
+  },
+  "items": [
+    {
+      "id": "main-01",
+      "category": "Guion principal",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cuál ha sido el proyecto más complejo en el que has trabajado con Ionic/Capacitor y cuál era tu responsabilidad?",
+      "expected": "Debe diferenciar claramente lo que hizo el equipo de lo que decidió o implementó él. Busca ownership, decisiones técnicas, problemas reales, producción y capacidad para explicar consecuencias.",
+      "basic": "“Hacía pantallas, consumía APIs y corregía bugs” sin poder explicar decisiones propias.",
+      "followups": [
+        {
+          "q": "¿Qué decisión técnica dependía directamente de ti?",
+          "a": "Busca que especifique decisiones con impacto estructural (ej. abstracción de almacenamiento, elección de cliente HTTP, estrategia de manejo de estado o diseño de plugins) explicando la justificación técnica."
+        },
+        {
+          "q": "¿Qué problema difícil recuerdas y cómo lo resolviste?",
+          "a": "Debe detallar la metodología de diagnóstico (logs nativos, DevTools, profilado de memoria) y la solución implementada evaluando las consecuencias técnicas."
+        },
+        {
+          "q": "¿Qué cambiarías hoy de ese proyecto?",
+          "a": "Refleja capacidad de autocrítica técnica y evolución Senior (ej. haber aplicado arquitectura hexagonal desde el inicio, mejorado la cobertura de pruebas o evitado acoplamiento a librerías nativas específicas)."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Ownership",
+          "definition": "Responsabilidad real sobre una solución, no solo participación."
+        },
+        {
+          "term": "Trade-off",
+          "definition": "Balance entre ventajas y desventajas de una decisión."
+        }
+      ],
+      "tags": [
+        "seniority",
+        "experiencia",
+        "ownership"
+      ]
+    },
+    {
+      "id": "main-02",
+      "category": "Guion principal",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo estructurarías una aplicación Ionic que sabemos que va a crecer considerablemente?",
+      "expected": "Separación por features o dominio, responsabilidades claras, componentes reutilizables, servicios, estado y abstracción de infraestructura. No es obligatorio mencionar una arquitectura por nombre.",
+      "basic": "Solo enumera carpetas como components, pages, services y models.",
+      "followups": [
+        {
+          "q": "¿Qué evitarías que conociera directamente un componente?",
+          "a": "Evitar que los componentes UI conozcan detalles de comunicación HTTP directa, consultas a bases de datos locales o plugins de Capacitor nativos; deben interactuar exclusivamente a través de Servicios/Facade."
+        },
+        {
+          "q": "¿Cómo separarías lógica de negocio de integración nativa?",
+          "a": "Mediante el patrón Adapter/Puerto: definir interfaces en la capa de aplicación e inyectar las implementaciones concretas de Capacitor o Web Storage mediante la Inyección de Dependencias."
+        },
+        {
+          "q": "¿Qué cambiaría si trabajan varios equipos?",
+          "a": "Modularización por dominios/features (Monorepo o Nx), contratos de API estrictos, componentes de diseño independientes (Design System) y pipelines de CI/CD aislados."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Acoplamiento",
+          "definition": "Grado de dependencia entre partes del sistema."
+        },
+        {
+          "term": "Feature-based",
+          "definition": "Organización del código por funcionalidad o dominio en vez de solo por tipo de archivo."
+        }
+      ],
+      "tags": [
+        "arquitectura",
+        "escalabilidad",
+        "mantenibilidad"
+      ]
+    },
+    {
+      "id": "main-03",
+      "category": "Guion principal",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo sueles manejar las integraciones con funcionalidades nativas mediante Capacitor?",
+      "expected": "Plugins oficiales o mantenidos, permisos por plataforma, servicios/adapters para desacoplar componentes, manejo de errores y posibilidad de plugin propio si no existe solución adecuada.",
+      "basic": "“Instalo el plugin y lo llamo desde la página”.",
+      "followups": [
+        {
+          "q": "¿Lo consumirías directamente desde la página?",
+          "a": "No. La integración nativa debe encapsularse dentro de un Servicio de Angular para facilitar pruebas unitarias (mocks), manejo centralizado de errores y abstraer la plataforma."
+        },
+        {
+          "q": "¿Qué harías si no existe un plugin estable?",
+          "a": "Evaluar crear un plugin propio de Capacitor en Swift y Kotlin, o extender una solución de la comunidad tras auditar su código y mantenibilidad."
+        },
+        {
+          "q": "¿Cómo manejarías diferencias entre Android e iOS?",
+          "a": "Manejando permisos y variaciones de la API nativa dentro del servicio adapter, exponiendo una interfaz unificada en TypeScript para la app."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Plugin",
+          "definition": "Capa que conecta JavaScript/TypeScript con capacidades nativas."
+        },
+        {
+          "term": "Adapter",
+          "definition": "Capa propia que encapsula una dependencia externa para reducir acoplamiento."
+        }
+      ],
+      "tags": [
+        "capacitor",
+        "plugins",
+        "nativo"
+      ]
+    },
+    {
+      "id": "main-04",
+      "category": "Guion principal",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Una funcionalidad funciona en navegador pero falla en Android. ¿Cómo investigarías el problema?",
+      "expected": "Primero aislar si el fallo está en JavaScript/WebView o en la capa nativa. Luego revisar DevTools, Logcat/Android Studio, permisos, configuración nativa, plugin y diferencias de build.",
+      "basic": "“Reinstalaría node_modules”, “volvería a compilar” o propone cambios al azar sin aislar la causa.",
+      "followups": [
+        {
+          "q": "¿Qué revisarías si no aparece ningún error JavaScript?",
+          "a": "Inspeccionar los logs nativos mediante Logcat (Android Studio) o Console/Xcode para identificar excepciones en Swift/Kotlin, problemas de permisos en AndroidManifest/Info.plist o fallos en la WebView."
+        },
+        {
+          "q": "¿Qué cambia si solo falla en release?",
+          "a": "Revisar ofuscación y minificación con R8/ProGuard (reglas de conservación de clases), diferencias de configuración de variables de entorno, certificados de red o SSL Pinning."
+        },
+        {
+          "q": "¿Cómo sabrías si el problema es del plugin?",
+          "a": "Aislando la llamada al plugin en un proyecto mínimo reproducible y verificando si el error ocurre en la capa nativa antes de devolver la Promesa a JavaScript."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Root cause",
+          "definition": "Causa real del problema, no solo el síntoma."
+        },
+        {
+          "term": "Logcat",
+          "definition": "Sistema de logs de Android usado para inspeccionar errores nativos."
+        },
+        {
+          "term": "WebView",
+          "definition": "Contenedor nativo donde se ejecuta la aplicación web de Ionic."
+        }
+      ],
+      "tags": [
+        "debugging",
+        "android",
+        "webview",
+        "producción"
+      ]
+    },
+    {
+      "id": "security-01",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "La aplicación maneja información sensible. ¿Qué precauciones tomarías para evitar exposiciones?",
+      "expected": "Minimizar persistencia, secure storage para credenciales, evitar secretos hardcodeados, sanitizar logs/telemetría, limpiar estado al cerrar sesión, proteger contenido en background y considerar caché, clipboard y screenshots.",
+      "basic": "“Cifraría todo” o “guardaría todo en Keychain/Keystore” sin distinguir tipos de datos ni ciclo de vida.",
+      "followups": [
+        {
+          "q": "¿Qué no guardarías nunca en localStorage?",
+          "a": "Refresh Tokens, contraseñas en texto plano, datos biométricos, número de tarjeta de crédito completo, CVV ni claves privadas de cifrado."
+        },
+        {
+          "q": "¿Qué pasa con logs de producción?",
+          "a": "Deben deshabilitarse o sanitizarse mediante máscaras (redaction) para evitar filtrar tokens, payloads sensibles o PII (Personally Identifiable Information) en la consola."
+        },
+        {
+          "q": "¿Qué harías al enviar la app a background?",
+          "a": "Superponer una pantalla de privacidad para ocultar capturas en el multitarea del SO y registrar un temporizador para expiración de sesión por inactividad."
+        },
+        {
+          "q": "¿Qué limpiarías al hacer logout?",
+          "a": "Vaciar el estado en memoria (Stores/BehaviorSubjects), cancelar suscripciones activas, limpiar tokens en Secure Storage e inhabilitar suscripciones a notificaciones push."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Data minimization",
+          "definition": "Guardar o transportar solo los datos estrictamente necesarios."
+        },
+        {
+          "term": "Redaction",
+          "definition": "Ocultar datos sensibles antes de escribirlos en logs."
+        },
+        {
+          "term": "Data at rest",
+          "definition": "Información almacenada persistentemente en el dispositivo."
+        },
+        {
+          "term": "Attack surface",
+          "definition": "Conjunto de puntos donde un sistema puede ser atacado o exponer datos."
+        }
+      ],
+      "tags": [
+        "seguridad",
+        "datos sensibles",
+        "logs",
+        "storage"
+      ]
+    },
+    {
+      "id": "security-02",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo manejarías el almacenamiento de access token y refresh token en una aplicación Ionic/Capacitor?",
+      "expected": "Evitar almacenamiento web inseguro para secretos. Considerar access token de corta duración en memoria y refresh token protegido mediante Keychain/Keystore a través de secure storage. Renovación y logout deben estar controlados.",
+      "basic": "Guardar ambos directamente en localStorage porque “es más fácil”.",
+      "followups": [
+        {
+          "q": "¿Qué diferencia hay entre Keychain y Keystore?",
+          "a": "Keychain es el almacén seguro de credenciales e ítems en iOS. Keystore gestiona y protege claves criptográficas dentro de chips seguros (TEE/Secure Enclave) en Android."
+        },
+        {
+          "q": "¿Guardarías un API secret dentro de la app?",
+          "a": "No. Cualquier cliente público (app móvil) puede ser descompilado. Los API Secrets deben permanecer exclusivamente en el servidor backend."
+        },
+        {
+          "q": "¿Qué ocurre si el refresh token deja de ser válido?",
+          "a": "La app debe revocar la sesión local de inmediato, limpiar Secure Storage y redirigir al usuario al flujo de inicio de sesión."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Keychain",
+          "definition": "Almacén seguro de credenciales y claves en iOS."
+        },
+        {
+          "term": "Keystore",
+          "definition": "Almacén protegido de claves criptográficas en Android."
+        },
+        {
+          "term": "In-memory",
+          "definition": "Dato que existe solo en RAM mientras vive el proceso."
+        },
+        {
+          "term": "Refresh token",
+          "definition": "Credencial de mayor duración usada para obtener nuevos access tokens."
+        }
+      ],
+      "tags": [
+        "tokens",
+        "keychain",
+        "keystore",
+        "secure storage"
+      ]
+    },
+    {
+      "id": "security-03",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Un usuario intenta acceder directamente a una ruta sensible sin haber pasado por el flujo esperado. ¿Cómo protegerías la navegación?",
+      "expected": "Guards en cliente para UX, validación de sesión/reautenticación y autorización definitiva en backend. El ID o deep link nunca es autorización por sí mismo.",
+      "basic": "Ocultar el botón o confiar únicamente en un guard frontend.",
+      "followups": [
+        {
+          "q": "¿Qué diferencia hay entre autenticación y autorización?",
+          "a": "Autenticación confirma QUIÉN es el usuario (identidad). Autorización valida QUÉ acciones o recursos tiene permitido ejecutar."
+        },
+        {
+          "q": "¿Qué pasa si alguien manipula manualmente la URL o deep link?",
+          "a": "Los Guards de cliente bloquean la vista en UI, pero la seguridad real la ejecuta el backend rechazando peticiones sin el token o permiso correcto."
+        },
+        {
+          "q": "¿Quién debe tomar la decisión final de acceso?",
+          "a": "El servidor backend tras validar el JWT o token de autorización en la petición."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Authentication",
+          "definition": "Validar quién es el usuario."
+        },
+        {
+          "term": "Authorization",
+          "definition": "Validar qué acciones o recursos puede usar."
+        },
+        {
+          "term": "Guard",
+          "definition": "Control de navegación en Angular; mejora UX pero no sustituye seguridad de backend."
+        }
+      ],
+      "tags": [
+        "navegación",
+        "guards",
+        "autorización"
+      ]
+    },
+    {
+      "id": "security-04",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Una notificación debe llevar al usuario al detalle de un movimiento. ¿Cómo manejarías el deep link de forma segura?",
+      "expected": "La notificación representa una intención, no un permiso. Validar destino, inicialización, sesión, posible reautenticación, guardar navegación pendiente si hay login y pedir el recurso al backend, que valida autorización.",
+      "basic": "Leer el ID del payload y ejecutar router.navigate directamente.",
+      "followups": [
+        {
+          "q": "¿Qué pasa si la app estaba completamente cerrada?",
+          "a": "Ocurre un Cold Start: la app debe completar su bootstrap, inicializar servicios y validar la sesión antes de procesar el deep link pendiente."
+        },
+        {
+          "q": "¿Qué pasa si el usuario debe iniciar sesión?",
+          "a": "Se almacena la ruta de destino como navegación postergada (deferred navigation) y se redirige a la pantalla deseada tras autenticarse con éxito."
+        },
+        {
+          "q": "¿Y si el recurso ya no existe?",
+          "a": "El backend responde 404/403 y la app muestra una pantalla informativa amigable en lugar de congelar la navegación."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Deep link",
+          "definition": "Enlace o evento externo que apunta a una ubicación concreta dentro de la app."
+        },
+        {
+          "term": "Cold start",
+          "definition": "Inicio cuando el proceso de la app no estaba ejecutándose."
+        },
+        {
+          "term": "Pending navigation",
+          "definition": "Destino guardado temporalmente hasta completar autenticación o inicialización."
+        },
+        {
+          "term": "Trust boundary",
+          "definition": "Punto donde un dato proveniente de una fuente no confiable debe validarse."
+        }
+      ],
+      "tags": [
+        "deeplink",
+        "notificaciones",
+        "autenticación",
+        "navegación"
+      ]
+    },
+    {
+      "id": "security-05",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "El usuario deja la aplicación en segundo plano varios minutos y luego vuelve. ¿Cómo manejarías la sesión?",
+      "expected": "Escuchar lifecycle global con @capacitor/app, registrar tiempo fuera, validar estado de sesión al volver, aplicar timeout/reautenticación según política y no asumir que el proceso permaneció vivo.",
+      "basic": "Usar solo ionViewWillEnter o asumir que mientras haya token la sesión sigue siendo válida.",
+      "followups": [
+        {
+          "q": "¿Qué evento escucharías al volver a foreground?",
+          "a": "El evento resume o appStateChange(isActive: true) de @capacitor/app."
+        },
+        {
+          "q": "¿Qué pasa si el SO mata el proceso?",
+          "a": "El estado en memoria se pierde; la app debe reiniciarse leyendo el estado persistido seguro y validando si la sesión sigue vigente."
+        },
+        {
+          "q": "¿Cuándo pedirías biometría de nuevo?",
+          "a": "Si el tiempo transcurrido en background excede el umbral de inactividad definido por la política de seguridad (ej. 2-5 minutos)."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Foreground",
+          "definition": "Estado donde la app vuelve a estar activa para el usuario."
+        },
+        {
+          "term": "Background",
+          "definition": "Estado donde deja de estar en uso activo."
+        },
+        {
+          "term": "Session timeout",
+          "definition": "Tiempo de inactividad a partir del cual se exige nueva validación."
+        },
+        {
+          "term": "Reauthentication",
+          "definition": "Volver a comprobar la identidad de un usuario que ya tenía sesión."
+        }
+      ],
+      "tags": [
+        "background",
+        "foreground",
+        "sesión",
+        "biometría"
+      ]
+    },
+    {
+      "id": "ionic-01",
+      "category": "Ionic",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cuándo usarías ionViewWillEnter en lugar de ngOnInit?",
+      "expected": "ngOnInit ocurre cuando Angular crea el componente. Una página Ionic puede permanecer en el stack, por lo que ionViewWillEnter permite reaccionar cada vez que vuelve a mostrarse.",
+      "basic": "Dice que son equivalentes o que siempre deben usarse juntos.",
+      "followups": [
+        {
+          "q": "¿Una página Ionic siempre se destruye al navegar fuera?",
+          "a": "No. Si la navegación es mediante push/forward, la página permanece en el IonRouterOutlet stack para permitir volver atrás."
+        },
+        {
+          "q": "¿Qué riesgo hay en hacer todas las llamadas HTTP en ionViewWillEnter?",
+          "a": "Riesgo de saturar la red con peticiones duplicadas e innecesarias cada vez que el usuario entra y sale de la pantalla."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Lifecycle",
+          "definition": "Eventos que representan creación, entrada, salida o destrucción."
+        },
+        {
+          "term": "Navigation stack",
+          "definition": "Historial de vistas que Ionic mantiene para navegación tipo app nativa."
+        }
+      ],
+      "tags": [
+        "lifecycle",
+        "ionic",
+        "angular"
+      ]
+    },
+    {
+      "id": "ionic-02",
+      "category": "Ionic",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué diferencia práctica hay entre ionViewWillEnter e ionViewDidEnter?",
+      "expected": "WillEnter ocurre antes de terminar la entrada/transición; DidEnter después de que la página ya quedó visible. Trabajo pesado antes de la transición puede afectar fluidez.",
+      "basic": "Solo dice “uno va antes y el otro después” sin entender para qué sirve la diferencia.",
+      "followups": [
+        {
+          "q": "¿Dónde colocarías una operación que no debe bloquear la animación?",
+          "a": "En ionViewDidEnter, garantizando que la transición visual de entrada haya finalizado completamente a 60 FPS."
+        },
+        {
+          "q": "¿Y si necesitas datos antes de pintar la pantalla?",
+          "a": "En ionViewWillEnter usando Skeleton Screens o loaders ligeros para mantener una perceived performance alta."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Transition",
+          "definition": "Animación o cambio visual entre una vista y otra."
+        },
+        {
+          "term": "Perceived performance",
+          "definition": "Rapidez que percibe el usuario, no solo el tiempo técnico medido."
+        }
+      ],
+      "tags": [
+        "lifecycle",
+        "performance",
+        "transiciones"
+      ]
+    },
+    {
+      "id": "ionic-03",
+      "category": "Ionic",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Qué diferencia hay entre ion-router-outlet y el router-outlet estándar de Angular?",
+      "expected": "Ionic añade comportamiento de navegación tipo móvil: stack de páginas, transiciones y conservación de vistas; no es solo sustitución de componentes.",
+      "basic": "Dice que son iguales o que ion-router-outlet solo cambia estilos.",
+      "followups": [
+        {
+          "q": "¿Cómo afecta eso al lifecycle?",
+          "a": "Provoca que los componentes no se destruyan al salir y exige usar eventos de Ionic (ionViewWillEnter/Leave) en lugar de depender únicamente de ngOnInit/ngOnDestroy."
+        },
+        {
+          "q": "¿Qué consecuencias tiene para el botón atrás?",
+          "a": "Permite que el botón atrás físico (Android) o el gesto de deslizamiento (iOS) restaure la vista previa instantáneamente conservando su scroll."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Router outlet",
+          "definition": "Punto donde el router renderiza la vista correspondiente."
+        },
+        {
+          "term": "Stack",
+          "definition": "Pila de pantallas conservadas para poder volver atrás."
+        }
+      ],
+      "tags": [
+        "router",
+        "navegación",
+        "stack"
+      ]
+    },
+    {
+      "id": "ionic-04",
+      "category": "Ionic",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cuándo usarías un Modal, un Popover o navegarías a una nueva página?",
+      "expected": "Decidir según UX: modal para flujo temporal/enfocado, popover para opciones contextuales breves y página para contenido que forma parte de la navegación normal.",
+      "basic": "Elige por preferencia personal o porque “se ve mejor”.",
+      "followups": [
+        {
+          "q": "¿Qué pasa si el modal empieza a tener demasiados pasos?",
+          "a": "Indica un problema de UX; debe convertirse en un flujo de páginas con su propia ruta o sub-router."
+        },
+        {
+          "q": "¿Cómo devuelve información al contexto que lo abrió?",
+          "a": "Mediante modalController.dismiss(data, role) capturado con onDidDismiss() en la página origen."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Overlay",
+          "definition": "Elemento que aparece encima del contenido actual, como modal, alert o popover."
+        },
+        {
+          "term": "Contextual action",
+          "definition": "Acción relacionada con un elemento o contexto concreto."
+        }
+      ],
+      "tags": [
+        "modal",
+        "popover",
+        "ux"
+      ]
+    },
+    {
+      "id": "ionic-05",
+      "category": "Ionic",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "Presentas un loader, haces una petición y el request falla. ¿Qué cuidarías para no bloquear la interfaz?",
+      "expected": "Garantizar cierre del loader incluso en error, por ejemplo mediante finally/finalize o manejo centralizado; evitar múltiples loaders y estados inconsistentes.",
+      "basic": "Solo mostrar un toast de error sin considerar que el loader sigue activo.",
+      "followups": [
+        {
+          "q": "¿Qué pasa si se disparan dos requests al mismo tiempo?",
+          "a": "Se debe usar un contador de solicitudes activas o operadores de RxJS (switchMap/exhaustMap) para evitar loaders inconsistentes."
+        },
+        {
+          "q": "¿Centralizarías loaders o los manejarías por pantalla?",
+          "a": "Centralizarlos mediante interceptores HTTP o un servicio de Loading central evita loaders huérfanos o bloqueos infinitos."
+        }
+      ],
+      "terms": [
+        {
+          "term": "finally/finalize",
+          "definition": "Mecanismo que garantiza ejecutar limpieza tanto en éxito como en error."
+        },
+        {
+          "term": "Race condition",
+          "definition": "Resultado incorrecto causado por operaciones asíncronas que terminan en distinto orden."
+        }
+      ],
+      "tags": [
+        "loader",
+        "errores",
+        "asincronía"
+      ]
+    },
+    {
+      "id": "ionic-06",
+      "category": "Ionic",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "Una lista grande empieza a tener scroll lento. ¿Qué revisarías desde la capa Ionic/UI?",
+      "expected": "Cuestionar cantidad de elementos renderizados, paginación/infinite scroll, tamaño del DOM, imágenes, trabajo por render y medición antes de optimizar.",
+      "basic": "“Usaría OnPush” como solución automática sin medir.",
+      "followups": [
+        {
+          "q": "¿Necesitas realmente renderizar todos los registros?",
+          "a": "No. Se debe implementar Paginación, Infinite Scroll o Virtual Scrolling (cdk-virtual-scroll) para limitar los nodos DOM."
+        },
+        {
+          "q": "¿Qué medirías antes de cambiar código?",
+          "a": "Auditar la tasa de frames (FPS), el número de nodos DOM y la memoria RAM asignada a la WebView mediante DevTools."
+        }
+      ],
+      "terms": [
+        {
+          "term": "DOM",
+          "definition": "Estructura de elementos HTML que la WebView debe mantener y renderizar."
+        },
+        {
+          "term": "Infinite scroll",
+          "definition": "Carga progresiva de resultados al acercarse al final de la lista."
+        },
+        {
+          "term": "Profiling",
+          "definition": "Medición del rendimiento para detectar el cuello de botella real."
+        }
+      ],
+      "tags": [
+        "performance",
+        "listas",
+        "scroll"
+      ]
+    },
+    {
+      "id": "ionic-07",
+      "category": "Ionic",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cómo personalizarías un componente Ionic sin romper su encapsulación?",
+      "expected": "Preferir CSS Custom Properties y Shadow Parts expuestos por el componente antes que selectores frágiles o intentar penetrar su implementación interna.",
+      "basic": "Usar selectores CSS muy específicos o ::ng-deep indiscriminadamente.",
+      "followups": [
+        {
+          "q": "¿Qué es Shadow DOM?",
+          "a": "Árbol DOM interno e aislado de un Web Component que impide que estilos externos se filtren a su interior."
+        },
+        {
+          "q": "¿Qué problema te puede traer abusar de ::ng-deep?",
+          "a": "Acoplamiento frágil a la estructura interna del componente; romperá el diseño al actualizar versiones de Ionic."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Shadow DOM",
+          "definition": "DOM interno encapsulado de un Web Component."
+        },
+        {
+          "term": "CSS Custom Property",
+          "definition": "Variable CSS expuesta para personalizar un componente."
+        },
+        {
+          "term": "Shadow Part",
+          "definition": "Parte interna que un Web Component expone mediante ::part() para permitir estilos controlados."
+        }
+      ],
+      "tags": [
+        "css",
+        "shadow dom",
+        "theming"
+      ]
+    },
+    {
+      "id": "capacitor-01",
+      "category": "Capacitor",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cuál es la diferencia práctica entre Ionic y Capacitor?",
+      "expected": "Ionic cubre principalmente UI, navegación y experiencia frontend; Capacitor proporciona runtime/proyectos nativos y acceso a APIs del dispositivo mediante plugins.",
+      "basic": "“Ionic hace la app y Capacitor la convierte a código nativo”.",
+      "followups": [
+        {
+          "q": "¿Podrías usar Capacitor sin Ionic?",
+          "a": "Sí. Capacitor es un runtime agnóstico que puede usarse con React, Vue, Svelte o JavaScript puro."
+        },
+        {
+          "q": "¿La UI de Ionic se convierte en componentes nativos?",
+          "a": "No. La UI de Ionic se ejecuta como HTML/CSS optimizado dentro de la WebView nativa del dispositivo."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Runtime",
+          "definition": "Entorno donde se ejecuta la aplicación."
+        },
+        {
+          "term": "Native bridge",
+          "definition": "Mecanismo de comunicación entre JavaScript y código o APIs nativas."
+        }
+      ],
+      "tags": [
+        "ionic",
+        "capacitor",
+        "runtime"
+      ]
+    },
+    {
+      "id": "capacitor-02",
+      "category": "Capacitor",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué harías si necesitas una funcionalidad nativa y no existe un plugin estable?",
+      "expected": "Evaluar alternativas y, si procede, desarrollar un plugin propio con interfaz TypeScript y código nativo Android/iOS, encapsulado para limitar dependencia.",
+      "basic": "Buscar cualquier librería npm sin evaluar mantenimiento o compatibilidad.",
+      "followups": [
+        {
+          "q": "¿Qué revisarías antes de adoptar un plugin community?",
+          "a": "Mantenimiento activo, compatibilidad con la versión actual de Capacitor/iOS/Android, número de issues abiertos y licencias."
+        },
+        {
+          "q": "¿Cómo reducirías el impacto si luego debes reemplazarlo?",
+          "a": "Creando un servicio Adapter en Angular que abstraiga las llamadas al plugin detrás de una interfaz propia."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Custom plugin",
+          "definition": "Plugin propio que expone funcionalidad nativa al código web."
+        },
+        {
+          "term": "Maintenance risk",
+          "definition": "Riesgo de depender de una librería sin soporte o actualización suficiente."
+        }
+      ],
+      "tags": [
+        "plugins",
+        "nativo",
+        "mantenimiento"
+      ]
+    },
+    {
+      "id": "capacitor-03",
+      "category": "Capacitor",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué diferencia hay entre HttpClient de Angular y CapacitorHttp?",
+      "expected": "HttpClient está integrado con Angular, Observables e interceptores. CapacitorHttp permite apoyarse en networking nativo cuando existe una necesidad concreta. No usarlo solo porque “nativo es mejor”.",
+      "basic": "Dice que CapacitorHttp siempre reemplaza a HttpClient en una app Ionic.",
+      "followups": [
+        {
+          "q": "¿Usarías HTTP nativo solo para saltarte CORS?",
+          "a": "No. CORS es un control de seguridad del servidor que debe configurarse adecuadamente en el backend."
+        },
+        {
+          "q": "¿Qué perderías del pipeline de Angular?",
+          "a": "La cadena de HttpInterceptors (añadir tokens automáticamente, manejo global de errores) a menos que se abstraiga manualmente."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Interceptor",
+          "definition": "Capa que puede modificar requests/responses de Angular centralmente."
+        },
+        {
+          "term": "Native HTTP",
+          "definition": "Solicitud realizada mediante capacidades de red del sistema operativo."
+        },
+        {
+          "term": "CORS",
+          "definition": "Política del navegador que controla solicitudes entre orígenes distintos."
+        }
+      ],
+      "tags": [
+        "http",
+        "angular",
+        "cors"
+      ]
+    },
+    {
+      "id": "capacitor-04",
+      "category": "Capacitor",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Qué eventos considerarías cuando la app pasa a background y vuelve a foreground?",
+      "expected": "Distinguir lifecycle global de app (@capacitor/app: pause, resume, appStateChange) del lifecycle de páginas Ionic. Considerar que background no garantiza que el proceso siga vivo.",
+      "basic": "Responde ionViewWillLeave/ionViewWillEnter como si fueran lifecycle global.",
+      "followups": [
+        {
+          "q": "¿Qué diferencia hay entre pause y resume?",
+          "a": "pause se ejecuta cuando la app pasa a segundo plano; resume cuando regresa al uso activo en pantalla."
+        },
+        {
+          "q": "¿Qué pasa si Android mata el proceso?",
+          "a": "Se pierde el estado en RAM. Al reabrir, se ejecuta un Cold Start desde la primera pantalla o restableciendo estado persistido."
+        },
+        {
+          "q": "¿Para qué usarías appStateChange?",
+          "a": "Para monitorear cambios globales de visibilidad de la app y disparar reautenticaciones o pausar temporizadores."
+        }
+      ],
+      "terms": [
+        {
+          "term": "pause",
+          "definition": "Evento asociado a la transición hacia estado pausado/background."
+        },
+        {
+          "term": "resume",
+          "definition": "Evento cuando la app regresa al uso activo."
+        },
+        {
+          "term": "Process death",
+          "definition": "El sistema operativo elimina completamente el proceso de la aplicación."
+        }
+      ],
+      "tags": [
+        "lifecycle",
+        "background",
+        "foreground"
+      ]
+    },
+    {
+      "id": "cases-01",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "La aplicación abre pero queda en blanco después del splash. ¿Qué causas considerarías y cómo empezarías a aislarlas?",
+      "expected": "Tratar pantalla blanca como síntoma: assets/WebView, bootstrap Angular, ruta inicial, auth, promesa bloqueada, plugin nativo, errores release, memoria u overlay. Primero identificar hasta qué capa llegó la app.",
+      "basic": "“Falta un try/catch” o asumir una única causa.",
+      "followups": [
+        {
+          "q": "¿Angular alcanzó a hacer bootstrap?",
+          "a": "Inspeccionar DevTools/Logcat para ver si el módulo raíz se instanció antes del fallo."
+        },
+        {
+          "q": "¿Pasa en debug o release?",
+          "a": "Si solo ocurre en release, suele deberse a minificación/R8, URLs de entorno o firmas."
+        },
+        {
+          "q": "¿Qué revisarías si JavaScript no muestra errores?",
+          "a": "Revisar logs nativos de Android/iOS para descartar fallos al inicializar la WebView o plugins."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Bootstrap",
+          "definition": "Proceso inicial de arranque de Angular."
+        },
+        {
+          "term": "Unhandled exception",
+          "definition": "Error que no fue capturado por el código."
+        },
+        {
+          "term": "Hanging request",
+          "definition": "Operación asíncrona que queda esperando y no finaliza."
+        },
+        {
+          "term": "White screen",
+          "definition": "Síntoma de que la UI no llegó a renderizar o quedó bloqueada; no es una causa por sí misma."
+        }
+      ],
+      "tags": [
+        "pantalla blanca",
+        "bootstrap",
+        "debugging"
+      ]
+    },
+    {
+      "id": "cases-02",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Una acción crítica se puede ejecutar dos veces si el usuario toca rápidamente el botón. ¿Cómo lo evitarías?",
+      "expected": "Bloquear o restringir doble envío en UI y, para operaciones críticas, complementar con idempotencia en backend. No confiar solo en deshabilitar el botón.",
+      "basic": "Solo agregar un debounce al click y asumir que eso resuelve duplicados de red/reintentos.",
+      "followups": [
+        {
+          "q": "¿Qué pasa si el primer request sí llegó al backend pero la app perdió la respuesta?",
+          "a": "El backend procesa la petición y, gracias a la clave de idempotencia, si se reintenta devuelve el resultado anterior sin duplicar la transacción."
+        },
+        {
+          "q": "¿Qué es idempotencia?",
+          "a": "Propiedad que garantiza que una operación ejecutada múltiples veces produce exactamente el mismo resultado sin efectos colaterales."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Idempotencia",
+          "definition": "Propiedad que permite repetir una operación sin generar efectos duplicados."
+        },
+        {
+          "term": "Double submission",
+          "definition": "Ejecución múltiple involuntaria de la misma acción."
+        }
+      ],
+      "tags": [
+        "idempotencia",
+        "doble envío",
+        "operaciones críticas"
+      ]
+    },
+    {
+      "id": "cases-03",
+      "category": "Casos reales",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "Una versión funciona correctamente en debug pero falla en release. ¿Qué revisarías?",
+      "expected": "Diferencias de configuración, variables de entorno, firma/certificados, minificación u optimización, R8/ProGuard, servicios externos y comportamiento específico del build de producción.",
+      "basic": "Asumir que necesariamente es un error de Angular.",
+      "followups": [
+        {
+          "q": "¿Qué cambia entre debug y release?",
+          "a": "Minificación y ofuscación (R8/ProGuard), certificados de red, firmas criptográficas y variables de entorno."
+        },
+        {
+          "q": "¿Cómo validarías si apunta al ambiente correcto?",
+          "a": "Revisar los valores inyectados en los archivos de environment de Angular y los endpoints de la API."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Release build",
+          "definition": "Build optimizado y firmado para distribución."
+        },
+        {
+          "term": "R8/ProGuard",
+          "definition": "Herramientas de Android para optimizar, reducir y ofuscar código."
+        },
+        {
+          "term": "Environment configuration",
+          "definition": "Parámetros que cambian entre DEV, QA y PROD."
+        }
+      ],
+      "tags": [
+        "release",
+        "producción",
+        "android"
+      ]
+    },
+    {
+      "id": "mobilefirst-01",
+      "category": "Mobile First",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Qué diferencia existe entre Mobile First y simplemente hacer una interfaz responsive?",
+      "expected": "Responsive significa adaptarse a tamaños; Mobile First parte de las restricciones móviles para priorizar contenido, interacción y rendimiento y luego escala a pantallas mayores.",
+      "basic": "“Son lo mismo” o “Mobile First es usar media queries”.",
+      "followups": [
+        {
+          "q": "¿Mobile First significa diseñar para 375px?",
+          "a": "No. Significa diseñar pensando en las restricciones móviles (touch, batería, rendimiento) y escalar progresivamente."
+        },
+        {
+          "q": "¿Qué decisiones cambian además del CSS?",
+          "a": "Carga diferida de recursos, priorización de peticiones de red y ergonomía de navegación táctil."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Responsive design",
+          "definition": "Diseño que se adapta a distintos tamaños y características de pantalla."
+        },
+        {
+          "term": "Mobile First",
+          "definition": "Enfoque que comienza desde las restricciones móviles y mejora progresivamente."
+        }
+      ],
+      "tags": [
+        "responsive",
+        "mobile first",
+        "ux"
+      ]
+    },
+    {
+      "id": "mobilefirst-02",
+      "category": "Mobile First",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Tenemos una tabla con muchas columnas diseñada para desktop. ¿Cómo la adaptarías a móvil?",
+      "expected": "Priorizar información, cuestionar qué columnas son necesarias, usar detalle progresivo/cards o scroll horizontal cuando tenga sentido; no limitarse a “hacerla caber”.",
+      "basic": "Aplicar overflow-x automáticamente sin analizar la experiencia.",
+      "followups": [
+        {
+          "q": "¿Cómo decidirías qué información mostrar primero?",
+          "a": "Priorizando los 2-3 datos más relevantes para la decisión del usuario y ocultando detalles secundarios tras un botón de expansión."
+        },
+        {
+          "q": "¿Cuándo sí usarías scroll horizontal?",
+          "a": "Para galerías de imágenes o tarjetas relacionadas (carousels), asegurando indicadores visuales de scroll."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Information hierarchy",
+          "definition": "Priorización de contenido según importancia para el usuario."
+        },
+        {
+          "term": "Progressive disclosure",
+          "definition": "Mostrar primero lo esencial y revelar detalles bajo demanda."
+        }
+      ],
+      "tags": [
+        "tablas",
+        "responsive",
+        "jerarquía"
+      ]
+    },
+    {
+      "id": "mobilefirst-03",
+      "category": "Mobile First",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cómo determinas cuándo necesitas agregar un breakpoint?",
+      "expected": "Cuando el contenido o layout deja de funcionar bien, no por una lista rígida de modelos de dispositivo. Puede apoyarse en Grid/Flex y diseño fluido.",
+      "basic": "Siempre 320/768/1024 sin considerar el contenido.",
+      "followups": [
+        {
+          "q": "¿Qué prefieres: breakpoints por dispositivo o por contenido?",
+          "a": "Por contenido. Agregar un breakpoint cuando el diseño visual se rompe, independientemente del modelo de teléfono."
+        },
+        {
+          "q": "¿Qué significa layout fluido?",
+          "a": "Diseño que utiliza porcentajes, Flexbox y CSS Grid para adaptarse suavemente a cualquier ancho disponible."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Breakpoint",
+          "definition": "Punto donde cambia la distribución visual de la interfaz."
+        },
+        {
+          "term": "Fluid layout",
+          "definition": "Diseño que aprovecha de forma progresiva el espacio disponible."
+        }
+      ],
+      "tags": [
+        "breakpoints",
+        "css",
+        "layout"
+      ]
+    },
+    {
+      "id": "mobilefirst-04",
+      "category": "Mobile First",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué diferencias tienes en cuenta entre una interacción con mouse y una interacción táctil?",
+      "expected": "Touch targets suficientemente grandes, separación, no depender de hover, feedback táctil/visual, gestos y accesibilidad.",
+      "basic": "“En móvil se usa touch”.",
+      "followups": [
+        {
+          "q": "¿Qué harías con una acción que solo aparece en hover?",
+          "a": "Hacerla permanentemente visible en táctil o activar un menú contextual al presionar el elemento."
+        },
+        {
+          "q": "¿Qué es un touch target?",
+          "a": "Área interactiva mínima (mínimo 44x44px) destinada a recibir toques con los dedos."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Touch target",
+          "definition": "Área interactiva que el usuario puede tocar con el dedo."
+        },
+        {
+          "term": "Hover",
+          "definition": "Estado activado al pasar el mouse; no debe ser requisito funcional en touch."
+        }
+      ],
+      "tags": [
+        "touch",
+        "hover",
+        "accesibilidad"
+      ]
+    },
+    {
+      "id": "mobilefirst-05",
+      "category": "Mobile First",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué aspectos de rendimiento considerarías al diseñar Mobile First?",
+      "expected": "Dispositivos menos potentes, memoria, red variable, imágenes adecuadas, lazy loading, tamaño del bundle/DOM y evitar trabajo innecesario.",
+      "basic": "“Que cargue rápido” sin explicar cómo ni qué medir.",
+      "followups": [
+        {
+          "q": "¿Una imagen de 6 MB deja de ser pesada porque la muestras pequeña?",
+          "a": "No. La memoria de la WebView decodificará la imagen a su resolución física completa, consumiendo la misma RAM."
+        },
+        {
+          "q": "¿Qué significa lazy loading?",
+          "a": "Cargar imágenes o componentes únicamente cuando se acercan al viewport visible del usuario."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Bundle size",
+          "definition": "Tamaño del JavaScript/CSS que debe cargar y procesar la app."
+        },
+        {
+          "term": "Lazy loading",
+          "definition": "Cargar código o recursos solo cuando son necesarios."
+        }
+      ],
+      "tags": [
+        "performance",
+        "lazy loading",
+        "imágenes"
+      ]
+    },
+    {
+      "id": "release-01",
+      "category": "Publicación",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Qué diferencias principales tienes en cuenta al preparar una aplicación para publicar en Android y en iOS?",
+      "expected": "Android: Android Studio/Gradle, AAB, Play Console y firma. iOS: Xcode, certificados/provisioning, archive, App Store Connect/TestFlight. En ambos: versionado, configuración y pruebas.",
+      "basic": "Solo dice que una va a Play Store y otra a App Store.",
+      "followups": [
+        {
+          "q": "¿Qué parte de firma cambia entre plataformas?",
+          "a": "Android utiliza archivos Keystore (.jks). iOS utiliza Certificados de Distribución y Provisioning Profiles de Apple."
+        },
+        {
+          "q": "¿Cómo probarías antes de producción?",
+          "a": "Distribuyendo versiones beta privadas mediante TestFlight (iOS) y Google Play Internal Track (Android)."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Signing",
+          "definition": "Firma criptográfica que identifica al publicador de la app."
+        },
+        {
+          "term": "Provisioning profile",
+          "definition": "Configuración de Apple que relaciona app, capacidades y firma autorizada."
+        }
+      ],
+      "tags": [
+        "android",
+        "ios",
+        "firma"
+      ]
+    },
+    {
+      "id": "release-02",
+      "category": "Publicación",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cuál es la diferencia entre un AAB y un APK?",
+      "expected": "AAB es formato de publicación en Google Play; Play genera APK optimizados para dispositivos. APK es paquete instalable Android.",
+      "basic": "No distingue publicación de instalación.",
+      "followups": [
+        {
+          "q": "¿Cuál subirías normalmente a Google Play?",
+          "a": "Android App Bundle (AAB), permitiendo a Google Play generar APKs optimizados para cada dispositivo."
+        },
+        {
+          "q": "¿Qué papel tiene Play App Signing?",
+          "a": "Google custodia la clave de firma de producción y permite recuperar el acceso si pierdes la clave local."
+        }
+      ],
+      "terms": [
+        {
+          "term": "AAB",
+          "definition": "Android App Bundle usado como paquete de publicación."
+        },
+        {
+          "term": "APK",
+          "definition": "Paquete instalable de Android."
+        }
+      ],
+      "tags": [
+        "android",
+        "aab",
+        "apk"
+      ]
+    },
+    {
+      "id": "release-03",
+      "category": "Publicación",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cómo probarías una versión antes de enviarla definitivamente a producción?",
+      "expected": "Build release real, canales internos/cerrados en Android, TestFlight en iOS, dispositivos reales, smoke/regression tests y validación de configuración de ambiente.",
+      "basic": "“La pruebo en el emulador y luego la subo”.",
+      "followups": [
+        {
+          "q": "¿Por qué probar un build release y no solo debug?",
+          "a": "Porque release incluye ofuscación R8, optimizaciones y certificados reales que pueden causar comportamientos distintos a debug."
+        },
+        {
+          "q": "¿Qué validarías específicamente de QA vs PROD?",
+          "a": "Endpoints de backend, claves de analítica, comportamiento de autenticación y certificados de SSL Pinning."
+        }
+      ],
+      "terms": [
+        {
+          "term": "TestFlight",
+          "definition": "Canal de Apple para distribuir builds beta."
+        },
+        {
+          "term": "Internal testing",
+          "definition": "Distribución limitada de una versión antes del lanzamiento general."
+        },
+        {
+          "term": "Smoke test",
+          "definition": "Prueba rápida de los flujos críticos para confirmar que el build es utilizable."
+        }
+      ],
+      "tags": [
+        "testing",
+        "testflight",
+        "play console"
+      ]
+    },
+    {
+      "id": "release-04",
+      "category": "Publicación",
+      "priority": "complementaria",
+      "type": "pregunta",
+      "question": "Si DEV, QA y PROD necesitan configuraciones diferentes, ¿qué cuidarías antes de generar cada build?",
+      "expected": "Endpoints, variables, bundle/application IDs, certificados, servicios externos, analytics y evitar secretos dentro del cliente. Idealmente automatizado por pipeline.",
+      "basic": "Cambiar manualmente URLs en el código antes de compilar.",
+      "followups": [
+        {
+          "q": "¿Cómo evitarías publicar PROD apuntando a QA?",
+          "a": "Automatizando la inyección de environments en el pipeline de CI/CD según la rama de compilación."
+        },
+        {
+          "q": "¿Qué cosas no considerarías una variable de entorno segura aunque estén en un .env?",
+          "a": "Cualquier clave privada o secret expuesto dentro del paquete cliente de la app móvil."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Environment",
+          "definition": "Configuración correspondiente a DEV, QA o PROD."
+        },
+        {
+          "term": "Build configuration",
+          "definition": "Conjunto de parámetros usado para compilar una variante concreta."
+        }
+      ],
+      "tags": [
+        "dev",
+        "qa",
+        "prod",
+        "ci-cd"
+      ]
+    },
+    {
+      "id": "concept-01",
+      "category": "Conceptos de repaso",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Pantalla blanca después del splash",
+      "expected": "La 'pantalla blanca' (White Screen of Death - WSOD) no es un error en sí mismo, sino un síntoma general de que la WebView o la aplicación web dejó de renderizar o quedó congelada durante su arranque. Ocurre comúnmente por: 1) Excepciones no capturadas durante la fase de bootstrap de Angular, 2) Promesas o llamadas de inicialización asíncrona suspendidas indefinidamente sin manejo de timeout, 3) Errores de ruta/autenticación en bucle infinito, 4) Fallos en la carga de assets JS/CSS compilados en producción (ej. rutas relativas incorrectas), 5) Fallos nativos o de plugins al cargar antes de montar la WebView, o 6) Overlays o splash screens nativos que no se ocultan explícitamente tras completar la inicialización.",
+      "basic": "Asumir que la pantalla blanca se debe siempre a un único problema de CSS o a la falta de un try/catch puntual, en lugar de diagnosticar metódicamente la capa donde se detuvo el ciclo de arranque (WebView vs JavaScript vs Plugin Nativo).",
+      "followups": [
+        {
+          "q": "¿Hasta qué capa llegó la app antes de quedar en blanco?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Pasa solo en release?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Existen errores nativos aunque la consola web esté limpia?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Bootstrap",
+          "definition": "Proceso de inicialización de Angular y servicios base."
+        },
+        {
+          "term": "Unhandled exception",
+          "definition": "Error que ocurre sin un manejador que lo procese."
+        },
+        {
+          "term": "Hanging promise",
+          "definition": "Promesa que nunca resuelve ni rechaza y deja un flujo esperando."
+        }
+      ],
+      "tags": [
+        "repaso",
+        "pantalla blanca",
+        "debugging"
+      ]
+    },
+    {
+      "id": "concept-02",
+      "category": "Conceptos de repaso",
+      "priority": "media",
+      "type": "concepto",
+      "question": "Keychain, Keystore y Azure Key Vault",
+      "expected": "Son tres tecnologías de protección de secretos con propósitos y ámbitos totalmente distintos: 1) iOS Keychain y Android Keystore son servicios de seguridad locales dentro del dispositivo móvil. Almacenan credenciales, Refresh Tokens o claves de cifrado protegidas por hardware (Secure Enclave / TEE) y biometría. 2) Azure Key Vault es un servicio en la nube (cloud HSM) diseñado para gestionar secretos de infraestructura, certificados TLS y claves API del backend. Las aplicaciones móviles NUNCA deben consumir Azure Key Vault directamente con credenciales maestras; en su lugar, la app usa Keychain/Keystore localmente para guardar sus propios tokens y se comunica de forma segura con la API del backend, el cual utiliza Azure Key Vault de forma interna.",
+      "basic": "Creer que Azure Key Vault sustituye a Keychain/Keystore en el cliente móvil o intentar almacenar secretos globales de backend dentro del código fuente de la app.",
+      "followups": [
+        {
+          "q": "¿Qué guardaría la app y qué debería permanecer solo en backend?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué ocurre si cambia la biometría?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué significa device-bound?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Secure Enclave",
+          "definition": "Entorno de hardware aislado de Apple para proteger operaciones criptográficas sensibles."
+        },
+        {
+          "term": "Hardware-backed key",
+          "definition": "Clave protegida por hardware seguro del dispositivo."
+        },
+        {
+          "term": "Managed Identity",
+          "definition": "Identidad administrada por Azure para que un servicio acceda a otros servicios sin guardar credenciales."
+        },
+        {
+          "term": "Key invalidation",
+          "definition": "Una clave deja de ser utilizable por cambios de seguridad o biometría."
+        }
+      ],
+      "tags": [
+        "keychain",
+        "keystore",
+        "key vault",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "concept-03",
+      "category": "Conceptos de repaso",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Lifecycle global: background y foreground",
+      "expected": "El ciclo de vida global de la app administra las transiciones de estado a nivel de sistema operativo mediante @capacitor/app. El evento pause o appStateChange(isActive: false) se dispara cuando la app pasa a segundo plano (background). resume o appStateChange(isActive: true) ocurre al regresar al primer plano (foreground). Durante el estado en background, el sistema operativo (especialmente iOS/Android) puede pausar el hilo ejecutor o eliminar por completo el proceso (Process Death) para liberar memoria RAM. Por tanto, al regresar a foreground se deben revalidar timeouts de sesión, refrescar tokens, verificar estado de red y solicitar biometría si la política de seguridad lo exige.",
+      "basic": "Confundir el ciclo de vida global de la app con el ciclo de vida de páginas Ionic (ionViewWillEnter/ionViewWillLeave), o asumir que el código JavaScript sigue ejecutándose ininterrumpidamente mientras la app está en segundo plano.",
+      "followups": [
+        {
+          "q": "¿Qué diferencia hay entre pause y appStateChange?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué ocurre si Android mata el proceso?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué es appRestoredResult?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Process suspension",
+          "definition": "El sistema deja de dar tiempo de CPU al proceso mientras permanece en memoria."
+        },
+        {
+          "term": "Process termination",
+          "definition": "El sistema elimina completamente el proceso."
+        },
+        {
+          "term": "State restoration",
+          "definition": "Reconstrucción del estado después de que el sistema recrea la app."
+        }
+      ],
+      "tags": [
+        "lifecycle",
+        "background",
+        "foreground",
+        "capacitor"
+      ]
+    },
+    {
+      "id": "concept-04",
+      "category": "Conceptos de repaso",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Flujo seguro de deep link desde una notificación",
+      "expected": "Un deep link o notificación push representa exclusivamente una INTENCIÓN de navegación, jamás una autorización implícita. El flujo seguro exige: 1) Capturar el payload sin navegar de inmediato, 2) Verificar si la aplicación está inicializada y si existe una sesión activa; si no, guardar el destino como 'navegación pendiente' (deferred navigation) y redirigir al login o flujo de biometría, 3) Enviar el ID o recurso al backend mediante peticiones autenticadas para que el servidor valide si el usuario actual posee los permisos necesarios (autorización), y 4) Rendir la vista de destino solo tras confirmación exitosa del backend o manejar errores (401, 403, 404) limpiando el estado pendiente.",
+      "basic": "Extraer un parámetro o ID del payload de la notificación e invocar inmediatamente router.navigate() sin validar sesión ni autorización de backend.",
+      "followups": [
+        {
+          "q": "¿Qué pasa con un cold start?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué diferencia hay entre 401, 403 y 404?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué ocurre si cambia de usuario durante el flujo?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "401",
+          "definition": "La petición no está correctamente autenticada."
+        },
+        {
+          "term": "403",
+          "definition": "El usuario está identificado pero no tiene permiso para el recurso."
+        },
+        {
+          "term": "404",
+          "definition": "El recurso no existe o, en algunos diseños, no se revela su existencia."
+        },
+        {
+          "term": "Deferred navigation",
+          "definition": "Navegación que se posterga hasta completar una condición como login o inicialización."
+        }
+      ],
+      "tags": [
+        "deeplink",
+        "notificaciones",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "concept-ionic-01",
+      "category": "Ionic",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Shadow DOM, CSS Custom Properties y Shadow Parts en Ionic",
+      "expected": "Los Web Components de Ionic encapsulan su estructura HTML y estilos CSS utilizando el Shadow DOM, evitando que los CSS globales del proyecto afecten el interior del componente o viceversa. Para personalizar elementos dentro del Shadow DOM sin recurrir a selectores frágiles o desaconsejados como ::ng-deep: 1) Se utilizan las CSS Custom Properties (variables expuestas como --background, --color, --border-radius), las cuales atraviesan el límite del Shadow DOM, y 2) Se utilizan los Shadow Parts (::part()), que son elementos internos marcados explícitamente por Ionic para permitir estilizado directo desde el CSS externo.",
+      "basic": "Intentar sobreescribir la estructura interna de componentes Ionic usando ::ng-deep o selectores CSS profundos, lo que causa roturas silenciosas al actualizar la versión de Ionic.",
+      "followups": [
+        {
+          "q": "¿Qué problemas genera el uso de ::ng-deep en componentes con Shadow DOM?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cómo identificas en la documentación o DevTools qué ::part() expone un componente Ionic?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Shadow DOM",
+          "definition": "Árbol DOM encapsulado e aislado que evita filtración no deseada de estilos."
+        },
+        {
+          "term": "CSS Custom Property",
+          "definition": "Variable CSS expuesta por el componente que atraviesa la barrera del Shadow DOM."
+        },
+        {
+          "term": "Shadow Part",
+          "definition": "Elemento interno marcado con el atributo part para permitir su estilizado desde el exterior mediante ::part()."
+        }
+      ],
+      "tags": [
+        "ionic",
+        "shadow dom",
+        "css",
+        "theming"
+      ]
+    },
+    {
+      "id": "concept-ionic-02",
+      "category": "Ionic",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Ciclo de vida de páginas Ionic (IonRouterOutlet) vs Angular Router",
+      "expected": "Mientras que el RouterOutlet estándar de Angular destruye los componentes al navegar hacia otra ruta, el IonRouterOutlet de Ionic mantiene una pila de páginas (Navigation Stack) vivas en el DOM para posibilitar transiciones fluidas de deslizamiento y conservar el estado de scroll al presionar 'Atrás'. Como consecuencia, ngOnInit() solo se ejecuta UNA VEZ al instanciar el componente por primera vez. Para ejecutar lógica cada vez que la vista aparece en pantalla (como actualizar datos o refrescar contadores), Ionic ofrece los eventos propios ionViewWillEnter e ionViewDidEnter. Igualmente, ionViewWillLeave e ionViewDidLeave notifican la salida sin destruir el componente.",
+      "basic": "Tratar ionViewWillEnter como un reemplazo idéntico de ngOnInit(), provocando llamadas HTTP redundantes o duplicadas cada vez que el usuario regresa a una pantalla guardada en el stack.",
+      "followups": [
+        {
+          "q": "¿Qué ocurre con las suscripciones a Observables en una página que permanece en el stack?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿En qué casos es preferible usar ionViewWillLeave e ionViewDidLeave?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Navigation Stack",
+          "definition": "Pila de vistas que Ionic preserva en memoria para navegación tipo app nativa."
+        },
+        {
+          "term": "ionViewWillEnter",
+          "definition": "Evento que se dispara cuando la página está a punto de convertirse en la vista activa."
+        }
+      ],
+      "tags": [
+        "ionic",
+        "lifecycle",
+        "router",
+        "stack"
+      ]
+    },
+    {
+      "id": "concept-capacitor-01",
+      "category": "Capacitor",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Capacitor Bridge y la arquitectura de comunicación IPC",
+      "expected": "Capacitor ejecuta la aplicación web dentro de un contenedor WebView nativo (WKWebView en iOS, Android WebView en Android). La comunicación entre JavaScript y el código nativo (Swift/Kotlin) se realiza mediante un puente (Native Bridge) asíncrono basado en transmisión de mensajes serializados en JSON (IPC). Cuando la app invoca un método de un plugin nativo (ej. @capacitor/camera), el puente empaqueta los argumentos, los envía a la capa nativa y devuelve una Promise JavaScript. Para eventos continuos (geolocalización, giroscopio, push), el puente registra listeners que notifican asíncronamente a JavaScript cuando la capa nativa emite un nuevo evento.",
+      "basic": "Creer que Capacitor compila o convierte el código JavaScript en código nativo ejecutable C++/Java/Swift, en lugar de entenderlo como un runtime web desacoplado que se comunica con el sistema operativo mediante un puente IPC.",
+      "followups": [
+        {
+          "q": "¿Qué impacto en rendimiento tiene enviar objetos de datos extremadamente grandes a través del puente?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cómo se gestiona el ciclo de vida de los listeners de eventos nativos?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Native Bridge",
+          "definition": "Capa de comunicación bidireccional asíncrona entre el motor web y el sistema operativo."
+        },
+        {
+          "term": "Plugin Interface",
+          "definition": "Contrato TypeScript que especifica las capacidades expuestas por la capa nativa."
+        }
+      ],
+      "tags": [
+        "capacitor",
+        "bridge",
+        "ipc",
+        "nativo"
+      ]
+    },
+    {
+      "id": "concept-capacitor-02",
+      "category": "Capacitor",
+      "priority": "media",
+      "type": "concepto",
+      "question": "CapacitorHttp vs HttpClient de Angular: Cuándo usar cuál",
+      "expected": "HttpClient de Angular se ejecuta dentro del motor JavaScript de la WebView mediante peticiones estándar fetch/XHR, aprovechando la cadena de interceptores de Angular (HttpInterceptor), la gestión de Observables y la caché web. CapacitorHttp intercepta o delega las peticiones HTTP a las librerías de red nativas del sistema operativo (URLSession en iOS, UrlConnection / OkHttp en Android). Esto le permite saltar restricciones de CORS del navegador en entornos móviles y compartir cookies nativas del sistema. Sin embargo, al desviar las peticiones fuera de la WebView, se puede perder la integración directa con los interceptores de Angular si no se abstrae adecuadamente mediante un adapter.",
+      "basic": "Utilizar CapacitorHttp indiscriminadamente en toda la aplicación solo para evitar configurar adecuadamente las políticas de CORS en los servidores de desarrollo o backend.",
+      "followups": [
+        {
+          "q": "¿Por qué eludir CORS en cliente no es una buena práctica de arquitectura?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué sucede con los interceptores de token de Angular al usar CapacitorHttp directamente?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "CORS",
+          "definition": "Política de seguridad del navegador que restringe solicitudes entre orígenes distintos."
+        },
+        {
+          "term": "Native Networking",
+          "definition": "Peticiones HTTP ejecutadas directamente por las APIs de red del sistema operativo."
+        }
+      ],
+      "tags": [
+        "capacitor",
+        "http",
+        "cors",
+        "networking"
+      ]
+    },
+    {
+      "id": "concept-security-01",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Almacenamiento Seguro: Web Storage vs Keychain / Keystore",
+      "expected": "El almacenamiento web tradicional (localStorage, sessionStorage e IndexedDB) se guarda en archivos planos no cifrados dentro del directorio del navegador WebView. Cualquier vulnerabilidad de inyección de código (XSS) o inspección física de un dispositivo rooteado/jailbroken permite extraer su contenido fácilmente. Por ello, la información confidencial (Refresh Tokens, datos biométricos, claves de sesión) debe almacenarse utilizando Keychain (iOS) y Android Keystore a través de plugins seguros (como @capacitor-community/secure-storage o Capacitor Vault). Estos servicios cifran la información con claves respaldadas por módulos de seguridad en hardware (Secure Enclave / TEE) inaccesibles para otras apps o inspección web.",
+      "basic": "Guardar tokens de autenticación de larga duración en localStorage o sessionStorage por simplicidad de desarrollo.",
+      "followups": [
+        {
+          "q": "¿Dónde debe conservarse un Access Token de vida corta?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué ocurre con las claves almacenadas en Keystore si el usuario desactiva el bloqueo de pantalla del dispositivo?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "XSS (Cross-Site Scripting)",
+          "definition": "Vulnerabilidad web donde un atacante ejecuta scripts para leer el almacenamiento del navegador."
+        },
+        {
+          "term": "Hardware-backed Security",
+          "definition": "Almacenamiento de claves dentro del chip de seguridad dedicado del dispositivo (Secure Enclave / TEE)."
+        }
+      ],
+      "tags": [
+        "seguridad",
+        "keychain",
+        "keystore",
+        "storage"
+      ]
+    },
+    {
+      "id": "concept-security-02",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Certificate Pinning (SSL / TLS Pinning) en apps móviles",
+      "expected": "Certificate Pinning es una técnica de seguridad donde la aplicación móvil contiene embebido el certificado SSL/TLS o el hash de la clave pública del servidor backend objetivo. Durante el saludo inicial (TLS Handshake), la aplicación verifica que la clave o certificado presentado por el servidor coincida exactamente con el valor empaquetado. Esto invalida cualquier intento de interceptar la conexión mediante ataques Man-in-the-Middle (MitM), incluso si un atacante consigue instalar un certificado de CA malicioso o malintencionado en los ajustes de red del dispositivo del usuario.",
+      "basic": "Asumir que realizar peticiones a través de https:// es automáticamente inmune a la interceptación de tráfico o inspección proxy (como Charles Proxy o Fiddler) en dispositivos con CA personalizadas instaladas.",
+      "followups": [
+        {
+          "q": "¿Qué sucede si el certificado del servidor expira y la app no soporta rotación dinámica de claves?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué diferencia existe entre Certificate Pinning y Public Key Pinning?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "MitM (Man-in-the-Middle)",
+          "definition": "Interceptación y posible manipulación de la comunicación entre la app y el servidor."
+        },
+        {
+          "term": "Public Key Pinning",
+          "definition": "Práctica de validar únicamente la clave pública para permitir la renovación de certificados sin actualizar el cliente."
+        }
+      ],
+      "tags": [
+        "seguridad",
+        "ssl pinning",
+        "mitm",
+        "redes"
+      ]
+    },
+    {
+      "id": "concept-arch-01",
+      "category": "Guion principal",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Estrategias de Cambio de Detección: Default, OnPush y Signals",
+      "expected": "En Angular, la estrategia por defecto (ChangeDetectionStrategy.Default) utiliza Zone.js para revisar todo el árbol de componentes de arriba a abajo ante cualquier evento asíncrono (click, timer, HTTP). La estrategia OnPush le indica a Angular que solo revise un componente si sus entradas @Input() cambian de referencia por inmutabilidad, o si se emiten eventos explícitamente dentro del componente o mediante el pipe async. Por su parte, los Signals introducen un modelo de reactividad fina (fine-grained), notificando directamente a los nodos DOM exactos que dependen del valor modificado, permitiendo en un futuro prescindir del escaneo masivo de Zone.js y optimizando dramáticamente el rendimiento en dispositivos móviles.",
+      "basic": "Aplicar ChangeDetectionStrategy.OnPush en un componente pero continuar mutando las propiedades de los objetos internamente sin cambiar sus referencias, provocando que la interfaz deje de actualizarse.",
+      "followups": [
+        {
+          "q": "¿Por qué OnPush requiere el uso estricto de datos inmutables?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cómo mejoran los Signals el rendimiento en móviles de gama baja?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Zone.js",
+          "definition": "Mecanismo que intercepta llamadas asíncronas en Angular para disparar detección de cambios global."
+        },
+        {
+          "term": "Signals",
+          "definition": "Primitiva reactiva de Angular que notifica cambios directamente a sus consumidores."
+        }
+      ],
+      "tags": [
+        "angular",
+        "performance",
+        "onpush",
+        "signals"
+      ]
+    },
+    {
+      "id": "concept-arch-02",
+      "category": "Guion principal",
+      "priority": "media",
+      "type": "concepto",
+      "question": "Gestión de Memoria y Fugas (Memory Leaks) en RxJS",
+      "expected": "En aplicaciones Angular e Ionic, las suscripciones a Observables de larga duración (como servicios instanciados como providedIn: 'root', eventos del Router o listeners de Capacitor) mantienen vivas las referencias en memoria a los callbacks y componentes que las crearon, impidiendo que el Garbage Collector libere la memoria aunque la pantalla se haya cerrado. Para prevenir fugas de memoria: 1) Utilizar el operador takeUntilDestroyed() en el contexto de inyección (Angular 16+), 2) Emplear el pipe async en los templates HTML para desuscripción automática, o 3) Gestionar explícitamente objetos Subscription cancelándolos en ngOnDestroy().",
+      "basic": "Asumir que Angular destruye y cancela automáticamente todas las suscripciones de RxJS iniciadas dentro de un componente cuando este se desmonta del DOM.",
+      "followups": [
+        {
+          "q": "¿Las peticiones de HttpClient requieren desuscripción manual?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué ventajas ofrece el operador takeUntilDestroyed() de Angular 16+?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Memory Leak",
+          "definition": "Retención involuntaria de memoria por referencias activas impidiendo el trabajo del Garbage Collector."
+        },
+        {
+          "term": "takeUntilDestroyed",
+          "definition": "Operador RxJS que completa automáticamente la suscripción al destruirse el contexto."
+        }
+      ],
+      "tags": [
+        "rxjs",
+        "memory leak",
+        "angular",
+        "mantenibilidad"
+      ]
+    },
+    {
+      "id": "concept-perf-01",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Estrategia Offline-First y persisencia de datos",
+      "expected": "La arquitectura Offline-First prioriza la experiencia del usuario tratando la falta de conexión a Internet como un estado normal y no como una falla. La aplicación interactúa primariamente con una base de datos local embebida (como SQLite mediante @capacitor-community/sqlite o IndexedDB), garantizando lectura y escritura instantáneas a 60 FPS. Las mutaciones realizadas sin conexión se encolan en una tabla de transacciones pendientes (Sync Queue). Al recuperar conectividad, un servicio de sincronización en segundo plano procesa la cola enviando las peticiones de forma idempotente al backend y resolviendo posibles conflictos de versión.",
+      "basic": "Utilizar localStorage o variables de estado volátiles para gestionar grandes volúmenes de datos o catálogos sin conexión, arriesgando pérdida de información por cuotas de espacio o cierre de proceso.",
+      "followups": [
+        {
+          "q": "¿Qué limitación tiene localStorage en capacidad de almacenamiento?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cómo se gestionan las resoluciones de conflicto cuando cambian los mismos datos en servidor y cliente?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "SQLite",
+          "definition": "Base de datos relacional ligera embebida nativamente en iOS y Android."
+        },
+        {
+          "term": "Idempotent Sync",
+          "definition": "Proceso de sincronización que puede reintentarse sin duplicar registros en la base de datos central."
+        }
+      ],
+      "tags": [
+        "offline",
+        "sqlite",
+        "storage",
+        "sincronización"
+      ]
+    },
+    {
+      "id": "concept-perf-02",
+      "category": "Casos reales",
+      "priority": "media",
+      "type": "concepto",
+      "question": "Optimización de listas extensas: Virtual Scrolling vs Infinite Scroll",
+      "expected": "Tanto Infinite Scroll como Virtual Scroll abordan listas largas, pero con mecanismos totalmente distintos. Infinite Scroll solicita páginas adicionales de datos del backend a medida que el usuario se acerca al final del scroll; sin embargo, cada nueva página añade nuevos nodos HTML al DOM, provocando que con miles de elementos el DOM se hipertrofie y la memoria de la WebView colapse. Virtual Scrolling (cdk-virtual-scroll-viewport) solo crea y mantiene en el DOM los nodos HTML correspondientes a los elementos visibles dentro del viewport actual, reciclando dinámicamente los mismos nodos al hacer scroll. Esto mantiene el consumo de memoria y CPU constante sin importar si la lista tiene 10 o 100,000 registros.",
+      "basic": "Confiar únicamente en Infinite Scroll para listas masivas sin considerar el impacto de degradación paulatina de la memoria RAM en dispositivos móviles al mantener miles de nodos DOM activos.",
+      "followups": [
+        {
+          "q": "¿Cuándo es suficiente usar Infinite Scroll y cuándo es indispensable usar Virtual Scroll?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cómo afecta un DOM hipertrofiado a la memoria del WebView móvil?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Virtual Scrolling",
+          "definition": "Renderizado dinámico que mantiene constante la cantidad de nodos DOM independientemente del total de ítems."
+        },
+        {
+          "term": "DOM Footprint",
+          "definition": "Cantidad de memoria y recursos requeridos por la WebView para gestionar los nodos HTML activos."
+        }
+      ],
+      "tags": [
+        "performance",
+        "virtual scroll",
+        "dom",
+        "listas"
+      ]
+    },
+    {
+      "id": "concept-pub-01",
+      "category": "Publicación",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Firma de aplicaciones y distribución: Android Keystore vs iOS Provisioning Profiles",
+      "expected": "Para publicar y ejecutar aplicaciones móviles en dispositivos reales, los sistemas operativos exigen firmas criptográficas de autenticidad. En Android, se genera una clave privada almacenada en un archivo Keystore (.jks / .keystore) utilizada para firmar el paquete AAB o APK. Google Play App Signing permite delegar a Google la custodia de la clave maestra de producción. En iOS, el proceso requiere un certificado de desarrollador (Distribution Certificate), un identificador único (App ID con sus Entitlements) y un Provisioning Profile emitido por Apple que vincula criptográficamente el certificado, el App ID y la lista de dispositivos autorizados o el canal de App Store.",
+      "basic": "Intentar generar o distribuir un paquete de versión final (Release) sin haber configurado las claves de firma criptográfica ni los perfiles de provisión adecuados para cada plataforma.",
+      "followups": [
+        {
+          "q": "¿Qué función cumple Play App Signing si se pierde la clave privada local de Keystore?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué diferencia existe entre un perfil Development, Ad-Hoc y App Store en iOS?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Play App Signing",
+          "definition": "Servicio de Google Play que almacena de forma segura la clave de firma de producción."
+        },
+        {
+          "term": "Provisioning Profile",
+          "definition": "Archivo criptográfico de Apple que certifica qué binario puede ejecutarse en qué dispositivos."
+        }
+      ],
+      "tags": [
+        "publicación",
+        "android",
+        "ios",
+        "firma"
+      ]
+    },
+    {
+      "id": "concept-pub-02",
+      "category": "Publicación",
+      "priority": "media",
+      "type": "concepto",
+      "question": "Actualizaciones de binarios vs Live Updates (Over-The-Air / OTA)",
+      "expected": "Existen dos vías para actualizar una app híbrida publicada: 1) Actualización de Binario (Native Build): Requiere compilar un nuevo AAB (Android) o IPA (iOS) cuando se agregan/modifican plugins nativos, iconos, permisos o la versión del runtime de Capacitor. Este binario debe subirse a Google Play Console y App Store Connect para someterse a revisión oficial de las tiendas (review process). 2) Live Updates / OTA (Over-The-Air): Permite reemplazar de forma transparente e instantánea el paquete de assets web (HTML, JS, CSS) en los dispositivos instalados descargándolos en segundo plano mediante servicios como Ionic Appflow o Capgo, omitiendo el tiempo de revisión de las tiendas siempre que no se altere la naturaleza de la app ni código nativo.",
+      "basic": "Creer que cualquier corrección menor en el código de una pantalla web o estilo CSS en Ionic exige inevitablemente compilar un nuevo binario nativo y esperar el proceso completo de aprobación de la App Store.",
+      "followups": [
+        {
+          "q": "¿Qué tipo de cambios requieren obligatoriamente una actualización de binario?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Qué políticas de Apple imponen límites a la modificación del comportamiento por OTA?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "OTA (Over-The-Air)",
+          "definition": "Despliegue directo de paquetes de código web a dispositivos sin pasar por tiendas de apps."
+        },
+        {
+          "term": "Binary Review",
+          "definition": "Proceso de inspección manual y automatizada ejecutado por Apple y Google a nuevos binarios."
+        }
+      ],
+      "tags": [
+        "publicación",
+        "ota",
+        "live updates",
+        "capacitor"
+      ]
+    },
+    {
+      "id": "concept-mf-01",
+      "category": "Mobile First",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Mobile First: Progressive Enhancement y áreas táctiles (Touch Targets)",
+      "expected": "La filosofía Mobile First aborda el diseño desde las restricciones físicas del dispositivo móvil: procesadores con energía limitada, pantallas pequeñas, conectividad variable y ergonomía táctil (uso con una mano/pulgar). Garantiza áreas de toque (Touch Targets) mínimas de 44x44px (Apple HIG) o 48x48px (Google Material Design) con separación suficiente para prevenir toques erróneos. Progressive Enhancement parte de este núcleo móvil optimizado y funcional, añadiendo capas progresivas de complejidad visual (paneles laterales, vistas multitabla) en pantallas mayores sin sobrecargar la versión móvil inicial.",
+      "basic": "Concebir Mobile First como 'diseñar en desktop y luego ocultar elementos pesados mediante display: none en CSS para móvil', lo que no evita que el navegador descargue y ejecute recursos innecesarios en el dispositivo móvil.",
+      "followups": [
+        {
+          "q": "¿Por qué ocultar elementos pesados con CSS en móvil no evita que el navegador gaste ancho de banda descargándolos?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        },
+        {
+          "q": "¿Cuáles son las dimensiones de Touch Target recomendadas por Apple HIG y Google Material Design?",
+          "a": "Respuesta y criterio técnico a evaluar por parte del entrevistador Senior."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Touch Target",
+          "definition": "Área interactiva mínima de un botón o elemento para ser presionado de forma precisa con los dedos."
+        },
+        {
+          "term": "Progressive Enhancement",
+          "definition": "Metodología que construye la experiencia desde el núcleo básico accesible hacia funciones avanzadas."
+        }
+      ],
+      "tags": [
+        "mobile first",
+        "touch target",
+        "ux",
+        "responsive"
+      ]
+    },
+    {
+      "id": "cases-04",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Al actualizar la huella o rostro en los ajustes del dispositivo iOS/Android, el almacenamiento seguro o biometría lanza un error irrecuperable en producción. ¿Qué ocurrió y cómo lo resolverías?",
+      "expected": "Explicar la invalidación de claves (Key Invalidation). Android Keystore e iOS Keychain con flag biometricCurrentSet invalidan automáticamente la clave de cifrado generada por hardware si la plantilla biométrica cambia en el SO. La app Senior debe capturar este fallo específico, no tratarlo como un error genérico, limpiar el token caducado/inválido de forma segura e instruir al usuario a reautenticarse con usuario/contraseña para regenerar un nuevo par de claves criptográficas.",
+      "basic": "Creer que es un error de código del plugin o intentar reiniciar la aplicación esperando que vuelva a funcionar automáticamente.",
+      "followups": [
+        {
+          "q": "¿Qué diferencia hay entre biometría para desbloqueo simple y biometría como clave criptográfica respaldada por Keystore?",
+          "a": "El desbloqueo simple devuelve un booleano (fácilmente falsificable). La clave respaldada por Keystore requiere autenticación biométrica previa para desencriptar el secreto mediante hardware."
+        },
+        {
+          "q": "¿Cómo evitar la pérdida irrecuperable de la sesión sin comprometer la seguridad?",
+          "a": "Capturando la excepción de invalidación de clave, eliminando el token caducado e indicando al usuario ingresar con contraseña para regenerar la clave."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Key Invalidation",
+          "definition": "Invalidación automática de la clave criptográfica por el SO al detectar cambios en el enrolamiento biométrico."
+        },
+        {
+          "term": "Secure Enclave",
+          "definition": "Procesador seguro en iOS que gestiona claves ligadas a biometría."
+        }
+      ],
+      "tags": [
+        "biometría",
+        "keystore",
+        "keychain",
+        "casos reales",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "cases-05",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Dos usuarios editan el mismo expediente en modo offline y ambos se conectan a internet al mismo tiempo. ¿Cómo manejarías la resolución de conflictos en la app y el backend?",
+      "expected": "Demostrar conocimiento de estrategias de sincronización avanzadas: 1) Determinación de la regla de negocio (Last-Write-Wins vs fusión de campos vs intervención manual), 2) Uso de identificadores UUID generados en cliente para evitar colisiones de IDs, 3) Control de concurrencia optimista utilizando firmas de versión (Vector Clocks, ETag o Timestamps con versión), y 4) Manejo de respuestas 409 Conflict presentando al usuario una interfaz de conciliación visual si la regla no es automatizable.",
+      "basic": "Decir 'se guarda el último que envíe la petición' (Last-Write-Wins a ciegas) sin considerar pérdida de datos ni control de versiones.",
+      "followups": [
+        {
+          "q": "¿Por qué los timestamps del reloj local del dispositivo no son confiables para ordenar eventos?",
+          "a": "Porque el usuario o la red pueden alterar la hora del dispositivo. Se deben usar contadores lógicos (Vector Clocks) o timestamps asignados por el servidor."
+        },
+        {
+          "q": "¿Qué es un Vector Clock o un CRDT (Conflict-free Replicated Data Type)?",
+          "a": "Estructura de datos que permite combinar cambios concurrentes sin necesidad de coordinación centralizada."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Optimistic Concurrency Control",
+          "definition": "Mecanismo que valida que la versión enviada coincida con la del servidor antes de aplicar la mutación."
+        },
+        {
+          "term": "Conflict Resolution",
+          "definition": "Regla de negocio o algoritmo encargado de conciliar cambios divergentes."
+        }
+      ],
+      "tags": [
+        "offline",
+        "sincronización",
+        "conflictos",
+        "concurrencia",
+        "casos reales"
+      ]
+    },
+    {
+      "id": "cases-06",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "La app móvil sufre cierres inesperados (OOM Crash / Memory Pressure) únicamente en dispositivos Android de gama media/baja al abrir un catálogo con imágenes de alta resolución. ¿Cómo diagnosticarías y solucionarías el problema?",
+      "expected": "Aislar la causa en la WebView: 1) Inspeccionar la memoria del Heap con Chrome DevTools (remote debugging) y Profiler de Android Studio, 2) Identificar si las imágenes se están renderizando a su tamaño original sin compresión ni escalado adaptativo, 3) Implementar imágenes responsivas (srcset / WebP) servidas desde CDN optimizada para móvil, 4) Limpiar referencias a imágenes en componentes destruidos y aplicar lazy loading nativo (loading='lazy'), y 5) En listas, utilizar Virtual Scrolling para desinstanciar elementos HTML fuera del viewport.",
+      "basic": "Sugerir que es un error de Angular o intentar solucionar agregando un setTimeout.",
+      "followups": [
+        {
+          "q": "¿Cómo afecta la resolución física de la imagen en decodificación a la memoria RAM de la WebView?",
+          "a": "La RAM consumida es proporcional a los píxeles descomprimidos (ancho x alto x 4 bytes por píxel), independientemente del tamaño comprimido en disco."
+        },
+        {
+          "q": "¿Por qué el formato WebP consume sustancialmente menos memoria que JPEG/PNG sin comprimir?",
+          "a": "Ofrece mayor compresión manteniendo alta fidelidad y algoritmos de decodificación eficientes en GPUs móviles."
+        }
+      ],
+      "terms": [
+        {
+          "term": "OOM (Out Of Memory)",
+          "definition": "El sistema operativo mata el proceso porque la WebView excedió la cuota de memoria RAM asignada."
+        },
+        {
+          "term": "Decoded Image Memory",
+          "definition": "Memoria en RAM descompresionada requerida para pintar cada píxel de una imagen."
+        }
+      ],
+      "tags": [
+        "performance",
+        "oom",
+        "memoria",
+        "imágenes",
+        "casos reales"
+      ]
+    },
+    {
+      "id": "cases-07",
+      "category": "Casos reales",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Al actualizar Xcode o el SDK de iOS, la integración con la cámara o localización deja de funcionar o la app se cierra de golpe al intentar abrir el plugin. ¿Qué causas nativas buscarías?",
+      "expected": "Revisar los permisos y cadenas de privacidad requeridas por Apple en el archivo Info.plist. Si Apple añade o endurece requisitos de privacidad (ej. NSCameraUsageDescription, NSLocationWhenInUseUsageDescription), la llamada a la API nativa sin la descripción explícita o el permiso del usuario causará un crash inmediato lanzado por el SO. También revisar si el plugin nativo requiere actualización para Swift/iOS SDK o si faltan Entitlements en la configuración.",
+      "basic": "Reinstalar node_modules o modificar el código TypeScript de Angular esperando que se solucione.",
+      "followups": [
+        {
+          "q": "¿Cómo se inspeccionan los logs nativos de iOS cuando la consola de JavaScript no muestra errores?",
+          "a": "Conectando el iPhone a un Mac y revisando la app Console de macOS o el panel de depuración de Xcode."
+        },
+        {
+          "q": "¿Qué es la plantilla Info.plist en un proyecto Capacitor en iOS?",
+          "a": "El archivo manifiesto donde se declaran permisos de privacidad, esquemas de URL y configuraciones globales de la app iOS."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Info.plist",
+          "definition": "Archivo de propiedades de iOS donde se declaran permisos de privacidad e identificadores nativos."
+        },
+        {
+          "term": "Privacy Usage Description",
+          "definition": "Texto explícito requerido por Apple que justifica ante el usuario el motivo por el cual se solicita un permiso nativo."
+        }
+      ],
+      "tags": [
+        "ios",
+        "xcode",
+        "info.plist",
+        "permisos",
+        "casos reales"
+      ]
+    },
+    {
+      "id": "security-06",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo implementarías la autenticación de usuarios mediante OAuth 2.0 con PKCE (Proof Key for Code Exchange) en una aplicación móvil Ionic/Capacitor?",
+      "expected": "OAuth 2.0 PKCE es la recomendación oficial para clientes públicos (apps móviles/SPA) que no pueden almacenar un client_secret de forma segura. El flujo implica: 1) La app genera un code_verifier aleatorio y deriva un code_challenge (SHA-256), 2) Abre el flujo de autorización mediante un navegador del sistema seguro (Browser de Capacitor / Safari View Controller / Custom Tabs, no una WebView incrustada ordinaria), 3) El proveedor de identidad redirige mediante un Deep Link registrado a la app con un authorization_code, y 4) La app intercambia el código más el code_verifier en el endpoint de token sin requerir client_secret.",
+      "basic": "Almacenar el client_secret del cliente OAuth dentro del código de la app o usar el flujo Implícito (Implicit Flow).",
+      "followups": [
+        {
+          "q": "¿Por qué está desaconsejado el Implicit Flow en apps móviles según las especificaciones de la IETF?",
+          "a": "Porque retorna tokens directamente en la URI de redirección, exponiéndolos en el historial del navegador y vulnerables a interceptación."
+        },
+        {
+          "q": "¿Por qué debe usarse el navegador nativo del sistema en lugar de un iframe o WebView incrustada para el login de OAuth?",
+          "a": "Porque evita que la app maliciosa pueda capturar las credenciales ingresadas (keylogging) y comparte la sesión existente en el navegador."
+        }
+      ],
+      "terms": [
+        {
+          "term": "PKCE",
+          "definition": "Mecanismo de seguridad que vincula la solicitud de código de autorización con el intercambio de tokens mediante un reto de clave dinámica."
+        },
+        {
+          "term": "System Browser vs WebView",
+          "definition": "El navegador del sistema protege contra la interceptación de credenciales por parte de la app."
+        }
+      ],
+      "tags": [
+        "oauth2",
+        "pkce",
+        "seguridad",
+        "autenticación"
+      ]
+    },
+    {
+      "id": "security-07",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Para una aplicación bancaria o fintech, se requiere verificar la integridad de la app y detectar si el dispositivo está rooteado o tiene Jailbreak. ¿Cómo abordarías este requerimiento?",
+      "expected": "Aislar y desacoplar las verificaciones: 1) Integrar plugins o librerías nativas probadas (RootBear en Android, Detección de Frida/Jailbreak en iOS), 2) Usar APIs oficiales del sistema operativo como Play Integrity API (Android) y DeviceCheck / App Attest (iOS) para validar en el backend que el binario es auténtico y no ha sido alterado (anti-tampering), y 3) Asumir una postura de defensa en profundidad donde la decisión final de bloquear operaciones críticas la toma el backend tras evaluar los atestaciones firmadas por Google/Apple.",
+      "basic": "Escribir un if sencillo en JavaScript verificando la existencia de la carpeta /system/app o confiar ciegamente en una bandera en cliente.",
+      "followups": [
+        {
+          "q": "¿Por qué la verificación puramente en cliente es fácilmente bypasseable mediante herramientas como Frida o Objection?",
+          "a": "Porque los atacantes pueden alterar la memoria en tiempo de ejecución y forzar a la función de verificación a retornar true."
+        },
+        {
+          "q": "¿Qué es la API Play Integrity de Google y qué atestaciones proporciona?",
+          "a": "Servicio de Google que verifica la autenticidad del binario, la integridad del dispositivo y licencias mediante firmas criptográficas emitidas por servidores de Google."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Play Integrity / App Attest",
+          "definition": "Servicios de atestación por hardware provistos por Google y Apple para certificar la integridad del binario y del entorno de ejecución."
+        },
+        {
+          "term": "Anti-Tampering",
+          "definition": "Técnicas que previenen la modificación del binario de la app o la inyección de código dinámico."
+        }
+      ],
+      "tags": [
+        "root",
+        "jailbreak",
+        "play-integrity",
+        "seguridad",
+        "fintech"
+      ]
+    },
+    {
+      "id": "release-05",
+      "category": "Publicación",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo estructurarías un pipeline de CI/CD automatizado para compilar, firmar y desplegar versiones de prueba y producción de una app Ionic/Capacitor?",
+      "expected": "Diseñar un pipeline robusto (GitHub Actions / GitLab CI / Bitrise) con los siguientes pasos: 1) Lint, pruebas unitarias y de integración web, 2) Inyección de variables de entorno según la rama (main, qa, dev), 3) npx cap sync para sincronizar los proyectos nativos, 4) Ejecución de scripts Fastlane (fastlane ios beta, fastlane android internal), 5) Inyección de certificados de firma y perfiles (mediante Fastlane Match o secretos de CI), 6) Compilación de paquetes AAB (Android) e IPA (iOS), y 7) Despliegue automático a Google Play Internal Track y Apple TestFlight notificando al equipo por Slack/Teams.",
+      "basic": "Compilar manualmente desde Android Studio y Xcode en la laptop del desarrollador cada vez que se requiere una entrega.",
+      "followups": [
+        {
+          "q": "¿Qué es Fastlane y qué problemas resuelve en la automatización móvil?",
+          "a": "Librería de automatización que gestiona la compilación, incremento de versión, firmas y subida a tiendas mediante un único comando."
+        },
+        {
+          "q": "¿Cómo se maneja la seguridad de los archivos de clave privada Keystore y certificados .p12 en los agentes de CI/CD?",
+          "a": "Codificándolos en Base64 e inyectándolos como variables de entorno secretas protegidas en el sistema de CI/CD."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Fastlane",
+          "definition": "Herramienta de automatización estándar en la industria móvil para gestionar builds, firmas y despliegues en tiendas."
+        },
+        {
+          "term": "Fastlane Match",
+          "definition": "Enfoque que gestiona y sincroniza certificados y perfiles de Apple entre miembros del equipo a través de un repositorio cifrado."
+        }
+      ],
+      "tags": [
+        "ci-cd",
+        "fastlane",
+        "automatización",
+        "testflight",
+        "play-console"
+      ]
+    },
+    {
+      "id": "release-06",
+      "category": "Publicación",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "Necesitamos que en el mismo dispositivo se puedan instalar simultáneamente la app de DEV, la de QA y la de PROD. ¿Qué cambios de configuración debes realizar a nivel de Capacitor y proyectos nativos?",
+      "expected": "Configurar Application IDs / Bundle IDs dinámicos por entorno: 1) En Android (build.gradle), definir applicationIdSuffix (.dev, .qa) para cada buildType o productFlavor, 2) En iOS (Xcode / targets), definir Bundle Identifiers distintos (com.empresa.app.dev, com.empresa.app.qa), 3) Configurar esquemas de URI / Deep Links distintos por variante (appdev://, appqa://), y 4) Utilizar capacitor.config.ts dinámico o variables de entorno que modifiquen el appId y appName durante el build para identificar visualmente cada ambiente.",
+      "basic": "Cambiar manualmente el paquete o desinstalar la versión de PROD para poder probar la de QA.",
+      "followups": [
+        {
+          "q": "¿Por qué dos aplicaciones con el mismo Application ID no pueden coexistir en un dispositivo Android/iOS?",
+          "a": "Porque el sistema operativo usa el Application ID como identificador único para instalar y aislar el almacenamiento de la app."
+        },
+        {
+          "q": "¿Cómo afecta la variación del Application ID a la configuración de servicios externos como Firebase o Push Notifications?",
+          "a": "Exige registrar cada Application ID (dev, qa, prod) en las consolas de Firebase/APNs y asociar sus archivos de configuración (google-services.json / GoogleService-Info.plist)."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Application ID / Bundle Identifier",
+          "definition": "Identificador único global de la aplicación ante el sistema operativo y las tiendas."
+        },
+        {
+          "term": "Build Variants / Flavors",
+          "definition": "Configuraciones que permiten generar distintas versiones (DEV/QA/PROD) de la misma base de código."
+        }
+      ],
+      "tags": [
+        "flavors",
+        "build-variants",
+        "bundle-id",
+        "configuración"
+      ]
+    },
+    {
+      "id": "capacitor-05",
+      "category": "Capacitor",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo implementarías un Plugin propio de Capacitor desde cero para exponer una librería nativa personalizada en iOS (Swift) y Android (Kotlin)?",
+      "expected": "Explicar el patrón de desarrollo de plugins de Capacitor: 1) Crear la interfaz en TypeScript con anotaciones @registerPlugin y definir los métodos con Promise o PluginListenerHandle, 2) En Android (Kotlin), extender Plugin, anotar la clase con @CapacitorPlugin y los métodos con @PluginMethod, utilizando call.resolve(JSObject) o call.reject(), 3) En iOS (Swift), extender CAPPlugin y usar la macro CAP_PLUGIN_METHOD, y 4) Empaquetar el plugin como paquete npm independiente o módulo local y desacoplar su consumo en la app Ionic mediante un servicio Adapter.",
+      "basic": "Intentar modificar directamente la carpeta android/ o ios/ generada en el proyecto principal sin estructurar un plugin reutilizable.",
+      "followups": [
+        {
+          "q": "¿Cómo se envían datos de eventos nativos asíncronos desde Kotlin/Swift hacia los listeners de JavaScript usando notifyListeners()?",
+          "a": "Invocando notifyListeners('nombreEvento', JSObject) desde el código nativo para emitir eventos procesados por addListener en TypeScript."
+        },
+        {
+          "q": "¿Qué ventajas tiene mantener el plugin en un paquete npm independiente frente a modificar el proyecto nativo local?",
+          "a": "Facilita la reutilización entre múltiples proyectos, el versionado semántico independiente y evita perder cambios al reconstruir carpetas nativas."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Custom Plugin",
+          "definition": "Módulo nativo propio que extiende las capacidades del runtime de Capacitor."
+        },
+        {
+          "term": "@CapacitorPlugin",
+          "definition": "Anotación en Kotlin/Java que registra la clase como plugin reconocible por el puente de Capacitor."
+        }
+      ],
+      "tags": [
+        "capacitor",
+        "custom-plugin",
+        "kotlin",
+        "swift",
+        "nativo"
+      ]
+    },
+    {
+      "id": "ionic-08",
+      "category": "Ionic",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo estructurarías un Monorepo de gran escala (Nx / Turborepo) que comparte librerías entre una aplicación Web Desktop en Angular y una app móvil en Ionic/Capacitor?",
+      "expected": "Diseñar una arquitectura limpia modularizada: 1) Librerías de Dominio/Core: Contienen modelos, servicios de API, lógica de negocio y estado (RxJS/Signals) reutilizables al 100% entre Web y Móvil, 2) Librerías de Infraestructura/Storage: Abstraen el almacenamiento local mediante un patrón Adapter (usando IndexedDB en Web y SQLite/SecureStorage en Móvil), 3) Librerías de UI compartidas: Componentes de UI agnósticos, y 4) Aplicaciones ejecutables: Proyectos apps/web y apps/mobile que consumen las librerías compartidas e inyectan las implementaciones concretas de infraestructura mediante Inyección de Dependencias (DI) de Angular.",
+      "basic": "Duplicar el código en dos repositorios separados o mezclar componentes de UI de Ionic dentro de la app web desktop.",
+      "followups": [
+        {
+          "q": "¿Cómo se utiliza la Inyección de Dependencias de Angular (Providers / InjectionToken) para alternar entre el Adapter de Web y el Adapter de Móvil?",
+          "a": "Definiendo un InjectionToken para la interfaz y proveyendo la implementación web o nativa según la plataforma en el AppConfig."
+        },
+        {
+          "q": "¿Qué estrategia seguirías para evitar cargar librerías nativas de Capacitor en el build de la versión Web?",
+          "a": "Usar carga dinámica (import()) o separación limpia de módulos mediante la configuración de paths del tsconfig en el Monorepo."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Monorepo",
+          "definition": "Estrategia de arquitectura que mantiene múltiples aplicaciones y librerías compartidas en un único repositorio Git."
+        },
+        {
+          "term": "Dependency Inversion Principle",
+          "definition": "Principio de diseño donde la lógica de negocio depende de abstracciones y no de implementaciones nativas o web concretas."
+        }
+      ],
+      "tags": [
+        "monorepo",
+        "nx",
+        "arquitectura",
+        "angular",
+        "reutilización"
+      ]
+    },
+    {
+      "id": "concept-senior-01",
+      "category": "Conceptos de repaso",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Monorepo y Arquitectura Hexagonal / Clean Architecture en proyectos Ionic",
+      "expected": "La Arquitectura Hexagonal (Puertos y Adaptadores) aplicada a proyectos Ionic/Capacitor permite desacoplar completamente la lógica de negocio y las reglas de dominio del framework web (Angular) y de la capa nativa (Capacitor). Las entidades y casos de uso viven en capas puras. Las llamadas a APIs, almacenamiento local o plugins nativos se definen como Puertos (Interfaces). Los Adaptadores implementan dichos Puertos (ej. CapacitorStorageAdapter vs LocalStorageAdapter). Esto garantiza que la app pueda migrarse de framework, probarse con unit tests puros sin WebView y mantenerse escalable a largo plazo.",
+      "basic": "Llamar a plugins de Capacitor o apis HTTP directamente desde los componentes de la interfaz de usuario.",
+      "followups": [
+        {
+          "q": "¿Cómo se testea la lógica de negocio si los componentes no dependen directamente de Capacitor?",
+          "a": "Mediante pruebas unitarias puras en Jest/Jasmine inyectando Mocks/Stubs de las interfaces de Puertos sin requerir entorno de WebView."
+        },
+        {
+          "q": "¿Qué es un Puerto y qué es un Adaptador en esta arquitectura?",
+          "a": "Un Puerto es una interfaz TypeScript que define el contrato de operaciones; un Adaptador es la implementación concreta (ej. Capacitor, LocalStorage, Mock)."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Hexagonal Architecture",
+          "definition": "Patrón de arquitectura de software que aísla la lógica central de las dependencias e interfaces externas."
+        },
+        {
+          "term": "Ports and Adapters",
+          "definition": "Interfaces (puertos) que definen el contrato y clases concretas (adaptadores) que implementan la tecnología específica."
+        }
+      ],
+      "tags": [
+        "arquitectura",
+        "hexagonal",
+        "clean-architecture",
+        "desacoplamiento"
+      ]
+    },
+    {
+      "id": "concept-senior-02",
+      "category": "Conceptos de repaso",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Optimización de Tiempos de Arranque (Cold Start Performance) en apps híbridas",
+      "expected": "El inicio en frío (Cold Start) comprende el tiempo desde que el usuario toca el icono de la app hasta que la interfaz es completamente interactiva (Time to Interactive - TTI). Para optimizarlo en Ionic: 1) Reducir el tamaño del Bundle inicial de JS mediante Standalone Components, Lazy Loading de rutas y Tree-Shaking agresivo, 2) Deferir la inicialización de plugins nativos no críticos hasta después de pintar la pantalla principal, 3) Usar Splash Screen nativa sincronizada que no se oculte hasta que el bootstrap de Angular finalice, y 4) Evitar peticiones de red bloqueantes durante la fase de arranque.",
+      "basic": "Creer que la lentitud del arranque inicial es una limitación insuperable e inherente a las aplicaciones híbridas.",
+      "followups": [
+        {
+          "q": "¿Qué métricas medirías (FCP, LCP, TTI) para auditar el arranque?",
+          "a": "First Contentful Paint (FCP), Largest Contentful Paint (LCP) y Time to Interactive (TTI) usando Lighthouse y Performance API."
+        },
+        {
+          "q": "¿Cómo afecta el número de plugins registrados en Capacitor al tiempo de inicialización de la WebView?",
+          "a": "Cada plugin ejecuta código de inicialización en el hilo principal nativo; reducir plugins innecesarios agiliza el bootstrap."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Cold Start",
+          "definition": "Proceso de arranque completo de la app desde cero cuando el proceso no estaba alojado en memoria RAM."
+        },
+        {
+          "term": "TTI (Time to Interactive)",
+          "definition": "Tiempo que tarda la aplicación en estar completamente lista para responder a la interacción del usuario."
+        }
+      ],
+      "tags": [
+        "performance",
+        "cold-start",
+        "bootstrap",
+        "optimización"
+      ]
+    },
+    {
+      "id": "security-08",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "¿Cómo funciona técnicamente la protección de claves criptográficas con Keychain en iOS y Keystore en Android a nivel de hardware?",
+      "expected": "Explicar la arquitectura respaldada por hardware: 1) En iOS, Secure Enclave es un coprocesador de seguridad aislado con su propio sistema operativo que almacena claves de cifrado y realiza operaciones criptográficas (AES, RSA, ECC) sin exponer la clave a la memoria RAM principal. 2) En Android, Android Keystore System interactúa con un entorno de ejecución seguro (TEE - Trusted Execution Environment) o chip StrongBox (HSM). Las claves generadas permanecen dentro del hardware seguro; la app solo recibe un key handle para solicitar firmas o desencriptados, garantizando que aunque el SO esté comprometido (root), la clave no se pueda extraer en texto plano.",
+      "basic": "Decir que Keychain y Keystore son simplemente 'carpetas cifradas' donde se guardan textos planos en el almacenamiento de la app.",
+      "followups": [
+        {
+          "q": "¿Qué sucede cuando se requiere autenticación biométrica previa para desbloquear una clave del Keystore?",
+          "a": "Se aplica la condición setUserAuthenticationRequired(true), lo que exige que el hardware valide el intento biométrico exitoso inmediatamente antes de autorizar la operación de cifrado/descifrado."
+        },
+        {
+          "q": "¿Qué es el chip StrongBox Keymaster en Android?",
+          "a": "Un chip de hardware independiente del procesador principal (HSM dedicado) con almacenamiento seguro y protección contra manipulación física."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Secure Enclave",
+          "definition": "Coprocesador seguro en dispositivos Apple para ejecutar operaciones criptográficas aisladas del SO."
+        },
+        {
+          "term": "TEE (Trusted Execution Environment)",
+          "definition": "Área segura del procesador principal en dispositivos Android para procesar datos confidenciales aisladamente."
+        }
+      ],
+      "tags": [
+        "keychain",
+        "keystore",
+        "secure enclave",
+        "tee",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "security-09",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Necesitamos prevenir capturas de pantalla, grabación de pantalla y filtración de datos sensibles en el portapapeles. ¿Cómo lo implementarías en Ionic/Capacitor?",
+      "expected": "Proteger la app a nivel nativo y de WebView: 1) Android: Aplicar la bandera FLAG_SECURE en la Activity principal para bloquear screenshots, screen recording e impedir que se muestre contenido en la vista de apps recientes (multitarea), 2) iOS: Detectar capturas/grabación mediante UIScreen.capturedDidChangeNotification y ocultar la UI o mostrar un blur overlay, y usar campos de texto protegidos o plugins de privacidad, 3) Portapapeles: Limpiar el Clipboard automáticamente tras copiar datos sensibles (como códigos OTP o contraseñas) mediante un temporizador breve (ej. 30 segundos) y deshabilitar copy/paste en inputs críticos.",
+      "basic": "Creer que esto se resuelve únicamente usando CSS con user-select: none.",
+      "followups": [
+        {
+          "q": "¿Por qué user-select: none en CSS no impide las capturas de pantalla del sistema operativo?",
+          "a": "Porque CSS solo restringe la selección de texto en la WebView, mientras que la captura de pantalla es una función del sistema operativo a nivel de marco de ventana."
+        },
+        {
+          "q": "¿Qué efecto produce FLAG_SECURE en el selector de aplicaciones recientes de Android?",
+          "a": "Reemplaza la miniatura de la pantalla de la app en la multitarea por una superficie completamente negra o en blanco."
+        }
+      ],
+      "terms": [
+        {
+          "term": "FLAG_SECURE",
+          "definition": "Flag de ventana en Android que prohíbe capturas, grabaciones de pantalla y renderizado en pantallas no seguras."
+        },
+        {
+          "term": "Screen Blur Overlay",
+          "definition": "Capa visual de privacidad sobrepuesta sobre la app al pasar a segundo plano."
+        }
+      ],
+      "tags": [
+        "flag_secure",
+        "clipboard",
+        "screenshots",
+        "privacidad",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "security-10",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "pregunta",
+      "question": "Nuestra aplicación necesita almacenar una base de datos local pesada en el dispositivo con datos médicos o financieros. ¿Cómo garantizamos el cifrado en reposo (Data at Rest)?",
+      "expected": "Implementar SQLCipher sobre SQLite: 1) Descartar Web Storage (localStorage/IndexedDB) no cifrado, 2) Utilizar el plugin @capacitor-community/sqlite habilitando la opción de cifrado transparente SQLCipher (AES-256), 3) Derivar la clave de cifrado de la base de datos a partir de una clave aleatoria generada de 256 bits guardada en Android Keystore / iOS Keychain (nunca hardcodeada), y 4) Cerrar explícitamente la conexión y purgar claves de la memoria al expirar la sesión o enviar la app a background.",
+      "basic": "Cifrar manualmente cada campo con una clave string guardada dentro del código JavaScript.",
+      "followups": [
+        {
+          "q": "¿Qué impacto en rendimiento tiene usar SQLCipher (AES-256) frente a una base de datos SQLite sin cifrar?",
+          "a": "Un leve sobrecosto de CPU (alrededor del 5-15%) durante la lectura/escritura por la encriptación por páginas, el cual se minimiza mediante índices y transacciones bien estructuradas."
+        },
+        {
+          "q": "¿Dónde debe conservarse la frase de paso o clave de cifrado de la base de datos SQLCipher?",
+          "a": "Exclusivamente en Keychain (iOS) o Android Keystore, derivada dinámicamente mediante PBKDF2 si requiere contraseña de usuario."
+        }
+      ],
+      "terms": [
+        {
+          "term": "SQLCipher",
+          "definition": "Extensión de código abierto que proporciona cifrado transparente de archivos de base de datos SQLite mediante AES-256."
+        },
+        {
+          "term": "Data at Rest",
+          "definition": "Información almacenada en medios de almacenamiento persistente (disco/flash)."
+        }
+      ],
+      "tags": [
+        "sqlcipher",
+        "sqlite",
+        "cifrado",
+        "data-at-rest",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "security-11",
+      "category": "Seguridad",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cómo asegurarías las políticas de tráfico de red en Android y iOS para evitar peticiones no cifradas en HTTP plano?",
+      "expected": "Configurar políticas de red strictly a nivel nativo: 1) Android: En res/xml/network_security_config.xml, configurar cleartextTrafficPermitted=\"false\" de forma global para prohibir peticiones HTTP no cifradas, permitiendo únicamente dominios HTTPS explícitos y configurando anclaje de certificados si aplica, 2) iOS: En Info.plist, mantener App Transport Security (ATS) habilitado (NSAppTransportSecurity -> NSAllowsArbitraryLoads = false), exigiendo TLS 1.2+ con Forward Secrecy, y 3) Auditar que no existan librerías nativas ni componentes WebView intentando cargar URLs http:// no seguras.",
+      "basic": "Creer que mientras se llame a endpoints https:// dentro del código TypeScript no se requiere configuración nativa del SO.",
+      "followups": [
+        {
+          "q": "¿Qué sucede si se intenta realizar una petición HTTP plana en Android 9+ con cleartextTrafficPermitted=\"false\"?",
+          "a": "El sistema operativo aborta la conexión de red inmediatamente lanzando una excepción java.net.UnknownServiceException: CLEARTEXT communication not permitted."
+        },
+        {
+          "q": "¿Qué es App Transport Security (ATS) en iOS?",
+          "a": "Característica de seguridad de Apple que exige que todas las conexiones de red HTTP cumplan con TLS 1.2+ y cifrado fuerte."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Cleartext Traffic",
+          "definition": "Tráfico de red transmitido sin cifrado (HTTP plano), vulnerable a interceptación."
+        },
+        {
+          "term": "ATS (App Transport Security)",
+          "definition": "Política de seguridad en iOS que bloquea tráfico de red inseguro por defecto."
+        }
+      ],
+      "tags": [
+        "http",
+        "cleartext",
+        "ats",
+        "redes",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "concept-security-03",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Invalidación de Claves Criptográficas por Cambios Biométricos (Key Invalidation)",
+      "expected": "Tanto Android Keystore como iOS Keychain ofrecen la opción de vincular una clave criptográfica a las huellas o rostros enrolados en el dispositivo (biometricCurrentSet en iOS / setUserAuthenticationRequired en Android). Si el usuario agrega, borra o reconfigura una huella en los ajustes del SO, la clave almacenada en el hardware seguro se invalida irreversiblemente por diseño de seguridad. La app debe detectar esta excepción específica, notificar al usuario de que sus credenciales biométricas cambiaron, solicitar login mediante usuario/contraseña y generar un nuevo par de claves respaldadas por el hardware.",
+      "basic": "Tratar la invalidación de claves como un fallo de código del plugin o intentar reintentar la operación en bucle.",
+      "followups": [
+        {
+          "q": "¿Por qué los chips de seguridad invalidan las claves al cambiar las plantillas biométricas?",
+          "a": "Para prevenir que un atacante que conozca el PIN del dispositivo agregue su propia huella y acceda a las claves y datos cifrados de la app."
+        },
+        {
+          "q": "¿Cómo se maneja la recuperación de la sesión en el cliente?",
+          "a": "Solicitando credenciales maestras (o token de recuperación de backend) para regenerar una nueva clave criptográfica en Keystore/Keychain."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Biometric Enrollment Change",
+          "definition": "Evento del SO donde se modifica el conjunto de plantillas biométricas registradas."
+        },
+        {
+          "term": "Key Purging",
+          "definition": "Eliminación o invalidación definitiva de una clave de cifrado sin posibilidad de recuperación."
+        }
+      ],
+      "tags": [
+        "keychain",
+        "keystore",
+        "biometría",
+        "key-invalidation",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "concept-security-04",
+      "category": "Seguridad",
+      "priority": "alta",
+      "type": "concepto",
+      "question": "Ofuscación de Código, Reglas de R8/ProGuard y Anti-Reverse Engineering",
+      "expected": "El código compilado de una app Android (AAB/APK) puede ser descompilado fácilmente a bytecode Smali o Java usando herramientas como JADX o dex2jar. R8/ProGuard encoge, optimiza y ofusca el código nativo y Java/Kotlin renombrando clases, métodos y campos con nombres ilegibles (a, b, c). En Ionic, además de R8 para la capa nativa, se debe aplicar minificación web (Terser/Esbuild) para ofuscar el paquete JavaScript. Adicionalmente, las reglas de ProGuard (proguard-rules.pro) deben configurar excepciones (-keep) para clases deserializadas con Reflection o Gson para evitar que la minificación las rompa en release.",
+      "basic": "Creer que publicar en Google Play mediante AAB ya ofusca el código automáticamente sin configurar R8 ni ProGuard.",
+      "followups": [
+        {
+          "q": "¿Qué es un archivo mapping.txt generado por R8/ProGuard y por qué se debe conservar?",
+          "a": "Es el mapa de des-ofuscación necesario para traducir los desgloses de pila (stacktraces) de errores recibidos en producción hacia los nombres de clases originales."
+        },
+        {
+          "q": "¿Por qué la minificación de código JavaScript no previene la ingeniería inversa completa pero sí dificulta su análisis?",
+          "a": "Porque transforma identificadores y estructuras pero la lógica sigue ejecutándose en el cliente; por ello la seguridad real debe residir en el backend."
+        }
+      ],
+      "terms": [
+        {
+          "term": "R8 / ProGuard",
+          "definition": "Herramienta de compilación en Android que reduce y ofusca el bytecode Java/Kotlin."
+        },
+        {
+          "term": "Deobfuscation Mapping",
+          "definition": "Archivo de correspondencia entre identificadores ofuscados y el código fuente original."
+        }
+      ],
+      "tags": [
+        "ofuscación",
+        "r8",
+        "proguard",
+        "ingeniería-inversa",
+        "seguridad"
+      ]
+    },
+    {
+      "id": "security-12",
+      "category": "Seguridad",
+      "priority": "media",
+      "type": "pregunta",
+      "question": "¿Cómo prevenir ataques de suplantación de la interfaz mediante solapamiento de pantallas (Tapjacking / Screen Overlay Attacks) en Android?",
+      "expected": "Tapjacking ocurre cuando una app maliciosa muestra una ventana transparente o flotante sobre la app objetivo para engañar al usuario y hacer que presione botones críticos involuntariamente. Se previene a nivel nativo habilitando la propiedad filterTouchesWhenObscured = true en las vistas principales o configurando la bandera de ventana para rechazar toques cuando existe una capa flotante superpuesta en Android (onFilterTouchEventForSecurity).",
+      "basic": "Desconocer los ataques de solapamiento de pantalla a nivel del sistema operativo móvil.",
+      "followups": [
+        {
+          "q": "¿Qué sucede cuando se activa filterTouchesWhenObscured y otra app muestra un overlay flotante?",
+          "a": "El sistema operativo descarta automáticamente los eventos de toque dirigidos a la app protegida mientras la vista esté tapada por el overlay."
+        },
+        {
+          "q": "¿En qué tipo de aplicaciones es crítica esta protección?",
+          "a": "En aplicaciones bancarias, pasarelas de pago y transferencias de dinero donde un toque involuntario confirme una transacción."
+        }
+      ],
+      "terms": [
+        {
+          "term": "Tapjacking",
+          "definition": "Ataque donde una ventana transparente sobrepuesta captura o desvía los toques del usuario."
+        },
+        {
+          "term": "Obscured Touches",
+          "definition": "Eventos de pantalla táctil recibidos cuando la interfaz de la app está parcialmente oculta por otra aplicación."
+        }
+      ],
+      "tags": [
+        "tapjacking",
+        "overlay",
+        "android",
+        "seguridad"
+      ]
+    }
+  ]
+};

@@ -1,0 +1,35 @@
+@if (item(); as questionItem) {
+  <div class="random-spotlight">
+    <div class="spotlight-header">
+      <div class="spotlight-title-group">
+        <span class="spotlight-tag">Senior Spotlight</span>
+        <span class="spotlight-category">{{ questionItem.category }}</span>
+      </div>
+      <button
+        class="icon-btn close-btn"
+        type="button"
+        (click)="dismiss()"
+        title="Cerrar sugerencia"
+        aria-label="Cerrar sugerencia"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <h2 class="spotlight-question">{{ questionItem.question }}</h2>
+
+    @if (firstFollowup(); as fu) {
+      <div class="spotlight-followup">
+        <span class="fu-label">Repregunta sugerida:</span>
+        <p class="fu-question">{{ fu.q }}</p>
+        @if (fu.a) {
+          <span class="fu-answer-label">Respuesta esperada:</span>
+          <p class="fu-answer">{{ fu.a }}</p>
+        }
+      </div>
+    }
+  </div>
+}
