@@ -26,6 +26,7 @@
         <div class="candidate-name-row">
           <strong class="cand-name">{{ cand.name }}</strong>
           <span class="cand-seniority" [attr.data-level]="cand.seniority">{{ cand.seniority }}</span>
+          <span class="cand-duration">⏱️ {{ cand.durationMinutes || 45 }}m</span>
         </div>
         <span class="cand-role">{{ cand.role }}</span>
       </div>

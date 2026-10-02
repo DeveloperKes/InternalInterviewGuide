@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CandidateSessionService } from '../../../../core/services/candidate-session.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import {
   Candidate,
+  DEFAULT_DURATION_OPTIONS,
+  InterviewDurationOption,
+  InterviewPreset,
   SENIORITY_OPTIONS,
   SUGGESTED_ROLES,
   SeniorityLevel,
@@ -15,7 +18,7 @@ import {
 @Component({
   selector: 'app-candidate-setup',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './candidate-setup.component.html',
   styleUrl: './candidate-setup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,13 +31,19 @@ export class CandidateSetupComponent {
 
   readonly seniorityOptions: SeniorityOption[] = SENIORITY_OPTIONS;
   readonly suggestedRoles: string[] = SUGGESTED_ROLES;
+  readonly durationOptions: InterviewDurationOption[] = DEFAULT_DURATION_OPTIONS;
 
   readonly formSubmitted = signal(false);
+  readonly isCustomDuration = signal(false);
+  readonly isSavingPreset = signal(false);
+  readonly isLoadPresetModalOpen = signal(false);
+  readonly newPresetName = signal('');
 
   readonly form: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
     role: ['', [Validators.required, Validators.minLength(3)]],
     seniority: ['senior' as SeniorityLevel, [Validators.required]],
+    durationMinutes: [60, [Validators.required, Validators.min(10), Validators.max(240)]],
   });
 
   selectSeniority(level: SeniorityLevel): void {
@@ -43,6 +52,84 @@ export class CandidateSetupComponent {
 
   setSuggestedRole(role: string): void {
     this.form.patchValue({ role });
+  }
+
+  selectPresetDuration(minutes: number): void {
+    this.isCustomDuration.set(false);
+    this.form.patchValue({ durationMinutes: minutes });
+  }
+
+  toggleCustomDuration(): void {
+    const nextState = !this.isCustomDuration();
+    this.isCustomDuration.set(nextState);
+  }
+
+  adjustDuration(delta: number): void {
+    const current = Number(this.form.get('durationMinutes')?.value) || 45;
+    const next = Math.max(10, Math.min(240, current + delta));
+    this.form.patchValue({ durationMinutes: next });
+  }
+
+  isPresetDurationSelected(minutes: number): boolean {
+    return !this.isCustomDuration() && this.form.get('durationMinutes')?.value === minutes;
+  }
+
+  // Interview Template Presets logic
+  applyPreset(preset: InterviewPreset): void {
+    this.isCustomDuration.set(false);
+    this.form.patchValue({
+      seniority: preset.seniority,
+      durationMinutes: preset.durationMinutes,
+      ...(preset.role ? { role: preset.role } : {}),
+    });
+  }
+
+  isPresetActive(preset: InterviewPreset): boolean {
+    return (
+      this.form.get('seniority')?.value === preset.seniority &&
+      this.form.get('durationMinutes')?.value === preset.durationMinutes
+    );
+  }
+
+  openLoadPresetModal(): void {
+    this.isLoadPresetModalOpen.set(true);
+  }
+
+  closeLoadPresetModal(): void {
+    this.isLoadPresetModalOpen.set(false);
+  }
+
+  applyPresetAndClose(preset: InterviewPreset): void {
+    this.applyPreset(preset);
+    this.closeLoadPresetModal();
+  }
+
+  openSavePresetModal(): void {
+    const defaultName = `${this.getSeniorityLabel(this.form.get('seniority')?.value)} (${this.form.get('durationMinutes')?.value}m)`;
+    this.newPresetName.set(defaultName);
+    this.isSavingPreset.set(true);
+  }
+
+  closeSavePresetModal(): void {
+    this.isSavingPreset.set(false);
+    this.newPresetName.set('');
+  }
+
+  confirmSavePreset(): void {
+    const name = this.newPresetName().trim();
+    if (!name) return;
+
+    const seniority = this.form.get('seniority')?.value;
+    const duration = Number(this.form.get('durationMinutes')?.value) || 45;
+    const role = this.form.get('role')?.value;
+
+    this.sessionService.saveCustomPreset(name, seniority, duration, role);
+    this.closeSavePresetModal();
+  }
+
+  deleteCustomPreset(id: string, event: Event): void {
+    event.stopPropagation();
+    this.sessionService.deleteCustomPreset(id);
   }
 
   getInitials(name: string | null | undefined): string {
@@ -62,6 +149,13 @@ export class CandidateSetupComponent {
     return opt ? opt.badge : 'Arquitectura';
   }
 
+  getDurationDescriptor(minutes: number): string {
+    if (minutes <= 30) return 'Screening / Filtro rápido';
+    if (minutes <= 45) return 'Técnica estándar';
+    if (minutes <= 60) return 'Evaluación completa';
+    return 'Deep Dive & Arquitectura';
+  }
+
   onSubmit(): void {
     this.formSubmitted.set(true);
 
@@ -70,8 +164,8 @@ export class CandidateSetupComponent {
       return;
     }
 
-    const { name, role, seniority } = this.form.value;
-    this.sessionService.startSession(name, role, seniority);
+    const { name, role, seniority, durationMinutes } = this.form.value;
+    this.sessionService.startSession(name, role, seniority, durationMinutes);
     this.router.navigate(['/entrevista']);
   }
 

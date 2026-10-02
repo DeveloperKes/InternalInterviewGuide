@@ -122,6 +122,16 @@
           color: #92400e;
         }
       }
+
+      .cand-duration {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        background-color: var(--surface-card);
+        border: 1px solid var(--border-subtle);
+        padding: 0.1rem 0.4rem;
+        border-radius: $radius-full;
+      }
     }
 
     .cand-role {
